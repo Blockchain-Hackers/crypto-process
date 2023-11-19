@@ -6,7 +6,7 @@
         tw-max-w-7xl tw-mx-auto lg:tw-absolute tw-inset-0 tw-p-6 sm:tw-p-10 tw-z-10">
         <div class="">
           <h1 class="tw-text-5xl sm:tw-text-6xl tw-font-bold">
-            Automate your work using
+            <span class="tw-relative tw-z-10">Automate your work using</span>
             <span
               class="before:tw-block before:tw-absolute before:-tw-inset-1 before:-tw-skew-y-3
               before:tw-bg-white tw-border-2 tw-border-black tw-relative tw-inline-block">
