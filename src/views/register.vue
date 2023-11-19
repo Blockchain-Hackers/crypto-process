@@ -6,7 +6,7 @@
         tw-max-w-7xl tw-mx-auto lg:tw-absolute tw-inset-0 tw-p-6 sm:tw-p-10 tw-z-10">
         <div class="">
           <h1 class="tw-text-5xl sm:tw-text-6xl tw-font-bold">
-            Automate your work using
+            Join us in automating your work using
             <span
               class="before:tw-block before:tw-absolute before:-tw-inset-1 before:-tw-skew-y-3
               before:tw-bg-white tw-border-2 tw-border-black tw-relative tw-inline-block">
@@ -17,8 +17,8 @@
 
         <div class="tw-bg-white sm:tw-p-6 sm:tw-border">
           <div>
-            <h2 class="tw-text-3xl tw-font-bold">Welcome back!</h2>
-            <form @submit.prevent="handleLogin" class="tw-mt-4 tw-text-xl">
+            <h2 class="tw-text-3xl tw-font-bold">Create an account</h2>
+            <form @submit.prevent="handleRegister" class="tw-mt-4 tw-text-xl">
               <label class="tw-relative tw-block">
                 <span class="tw-absolute tw-text-base tw-pl-3 tw-pt-1">Enter your email</span>
                 <input
@@ -30,8 +30,31 @@
                   class="tw-w-full tw-bg-gray-100 tw-p-3 tw-pt-7 tw-rounded-md tw-outline-black">
               </label>
 
+              <div class="tw-mt-4 tw-flex tw-gap-4">
+                <label class="tw-relative tw-w-full">
+                  <span class="tw-absolute tw-text-base tw-pl-3 tw-pt-1">Enter firstname</span>
+                  <input
+                    v-model="form.firstname"
+                    type="text"
+                    name="firstname"
+                    placeholder="Arya"
+                    :required="true"
+                    class="tw-w-full tw-bg-gray-100 tw-p-3 tw-pt-7 tw-rounded-md tw-outline-black">
+                </label>
+                <label class="tw-relative tw-w-full">
+                  <span class="tw-absolute tw-text-base tw-pl-3 tw-pt-1">Enter lastname</span>
+                  <input
+                    v-model="form.lastname"
+                    type="text"
+                    name="lastname"
+                    placeholder="Stark"
+                    :required="true"
+                    class="tw-w-full tw-bg-gray-100 tw-p-3 tw-pt-7 tw-rounded-md tw-outline-black">
+                </label>
+              </div>
+
               <label class="tw-relative tw-mt-4 tw-flex tw-items-center">
-                <span class="tw-absolute tw-top-0 tw-text-base tw-pl-3 tw-pt-1">Enter your password</span>
+                <span class="tw-absolute tw-top-0 tw-text-base tw-pl-3 tw-pt-1">Create password</span>
                 <input
                   v-model="form.password"
                   :type="showPassword ? 'text' : 'password'"
@@ -50,9 +73,9 @@
                 class="tw-w-full tw-bg-orange-600 tw-text-white tw-py-4 tw-mt-10
                 tw-rounded-md tw-font-medium hover:tw-ring-4 tw-ring-orange-500/30
                 transition-all tw-duration-300"
-                :disabled="logingIn">
-                <template v-if="!logingIn">
-                  Login
+                :disabled="registering">
+                <template v-if="!registering">
+                  Join us
                 </template>
                 <v-progress-circular
                   v-else
@@ -62,7 +85,7 @@
                 </v-progress-circular>
               </button>
               <p class="tw-mt-2 tw-text-sm">
-                Don't have an account? <router-link to="/register" class="tw-text-orange-500 tw-font-bold">Register</router-link>
+                Already own an account? <router-link to="/login" class="tw-text-orange-500 tw-font-bold">Login</router-link>
               </p>
             </form>
           </div>
@@ -89,6 +112,8 @@ import { useRouter } from 'vue-router'
 const form = ref({
   email: '',
   password: '',
+  firstname: '',
+  lastname: '',
 })
 const showPassword = ref(false)
 
@@ -98,12 +123,12 @@ const snackbar = ref({
 })
 
 const router = useRouter()
-const logingIn = ref(false)
-const handleLogin = () => {
-  logingIn.value = true
+const registering = ref(false)
+const handleRegister = () => {
+  registering.value = true
 
   setTimeout(() => {
-    logingIn.value = false
+    registering.value = false
     router.push('/dashboard')
   }, 2000)
 }
