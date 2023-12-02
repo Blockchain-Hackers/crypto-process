@@ -8,6 +8,7 @@
         tw-transition-all tw-duration-300 sm:tw-p-2"
       />
       <main
+        @click="openMobileNav=false"
         :class="{ 'tw-flex-none sm:tw-flex-auto':openMobileNav }"
         class="tw-min-h-[100svh] tw-max-w-2xl sm:tw-max-w-none
         tw-flex-grow tw-transition-all tw-duration-300 tw-overflow-y-auto">
@@ -16,7 +17,7 @@
           class="sm:tw-hidden tw-flex tw-items-center tw-px-3 tw-h-14
           tw-fixed tw-top-0 tw-inset-x-0 tw-bg-white tw-text-xl tw-text-primary
           before:tw-absolute before:tw-inset-0 before:tw-bg-primary/10 before:tw-z-[-1]">
-          <v-icon @click="openMobileNav=!openMobileNav">mdi-menu</v-icon>
+          <v-icon @click.stop="openMobileNav=!openMobileNav">mdi-menu</v-icon>
         </div>
         <div class="tw-pt-14 sm:tw-pt-0">
           <RouterView />
