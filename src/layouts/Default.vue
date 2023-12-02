@@ -1,5 +1,5 @@
 <template>
-  <div class="tw-min-h-[100svh]">
+  <div class="tw-h-[100svh]">
     <div class="tw-flex tw-h-full tw-overflow-x-hidden">
       <Nav
         :navItems="navItems"
@@ -9,14 +9,18 @@
       />
       <main
         :class="{ 'tw-flex-none sm:tw-flex-auto':openMobileNav }"
-        class="tw-min-h-[100svh]
+        class="tw-min-h-[100svh] tw-max-w-2xl sm:tw-max-w-none
         tw-flex-grow tw-transition-all tw-duration-300 tw-overflow-y-auto">
         <div
-          class="sm:tw-hidden tw-flex tw-p-3
-          tw-bg-primary/10 tw-text-xl tw-text-primary">
+          :class="{ 'tw-left-[220px]':openMobileNav }"
+          class="sm:tw-hidden tw-flex tw-p-3 tw-fixed tw-top-0 tw-inset-x-0
+          tw-bg-white tw-text-xl tw-text-primary
+          before:tw-absolute before:tw-inset-0 before:tw-bg-primary/10 before:tw-z-[-1]">
           <v-icon @click="openMobileNav=!openMobileNav">mdi-menu</v-icon>
         </div>
-        <RouterView />
+        <div class="tw-pt-14 sm:tw-pt-0">
+          <RouterView />
+        </div>
       </main>
     </div>
   </div>
