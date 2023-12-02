@@ -10,7 +10,7 @@
             <span
               class="before:tw-block before:tw-absolute before:-tw-inset-1 before:-tw-skew-y-3
               before:tw-bg-white tw-border-2 tw-border-black tw-relative tw-inline-block">
-              <span class="tw-relative tw-text-orange-500">Crypto Process.</span>
+              <span class="tw-relative tw-text-primary">Crypto Process.</span>
             </span>
           </h1>
         </div>        
@@ -47,8 +47,8 @@
               </label>
 
               <button
-                class="tw-w-full tw-bg-orange-600 tw-text-white tw-py-4 tw-mt-10
-                tw-rounded-md tw-font-medium hover:tw-ring-4 tw-ring-orange-500/30
+                class="tw-w-full tw-bg-primary tw-text-white tw-py-4 tw-mt-10
+                tw-rounded-md tw-font-medium hover:tw-ring-4 tw-ring-primary/30
                 transition-all tw-duration-300"
                 :disabled="logingIn">
                 <template v-if="!logingIn">
@@ -62,7 +62,7 @@
                 </v-progress-circular>
               </button>
               <p class="tw-mt-2 tw-text-sm">
-                Don't have an account? <router-link to="/register" class="tw-text-orange-500 tw-font-bold">Register</router-link>
+                Don't have an account? <router-link to="/register" class="tw-text-primary tw-font-bold">Register</router-link>
               </p>
             </form>
           </div>
