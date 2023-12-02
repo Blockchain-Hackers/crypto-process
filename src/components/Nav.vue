@@ -1,5 +1,5 @@
 <template>
-  <nav class="tw-bg-[#212121] tw-p-2 tw-text-sm">
+  <nav class="tw-bg-black-1 tw-text-sm">
     <ul>
       <li v-for="item in navItems" :key="item.name">
         <router-link
