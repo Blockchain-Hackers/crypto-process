@@ -1,13 +1,13 @@
 <template>
   <div class="">
-    <div class="tw-block tw-p-3">
+    <div v-if="true" class="tw-block tw-p-3">
       <SeedPhraseNotice
         class="tw-block tw-w-full"
         :is-dismissable="true"
       />
     </div>
     
-    <div class="tw-text-4xl">
+    <div class="tw-text-5xl">
       Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis fugit commodi delectus est cum iusto tenetur accusamus facilis beatae aut quas animi consequatur porro dignissimos aliquid, pariatur dolore saepe? Sed molestiae explicabo doloribus! Debitis suscipit velit nihil quia, et voluptate eligendi facere quibusdam! Quasi maxime alias temporibus cupiditate cumque, totam dolor sit soluta quis illo sed animi ipsum, eaque perferendis tempora unde vero architecto. Quis totam ea quo maiores? Doloribus vel dolorem magnam sunt impedit atque nihil quod sed aut autem delectus laudantium omnis, consectetur esse laboriosam quam corrupti optio earum nostrum rerum magni praesentium quas voluptates amet? Tempora, corporis!
     </div>
   </div>

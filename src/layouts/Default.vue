@@ -13,8 +13,8 @@
         tw-flex-grow tw-transition-all tw-duration-300 tw-overflow-y-auto">
         <div
           :class="{ 'tw-left-[220px]':openMobileNav }"
-          class="sm:tw-hidden tw-flex tw-p-3 tw-fixed tw-top-0 tw-inset-x-0
-          tw-bg-white tw-text-xl tw-text-primary
+          class="sm:tw-hidden tw-flex tw-items-center tw-px-3 tw-h-14
+          tw-fixed tw-top-0 tw-inset-x-0 tw-bg-white tw-text-xl tw-text-primary
           before:tw-absolute before:tw-inset-0 before:tw-bg-primary/10 before:tw-z-[-1]">
           <v-icon @click="openMobileNav=!openMobileNav">mdi-menu</v-icon>
         </div>
