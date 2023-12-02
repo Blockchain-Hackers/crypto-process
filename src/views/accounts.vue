@@ -1,8 +1,12 @@
 <template>
   <div class="tw-min-h-[100svh]">
-    <div>
+    <div class="tw-p-6">
       
-      <button @click="seedPhraseDialog=true">get seed phrase</button>
+      <button
+        @click="seedPhraseDialog=true"
+        class="tw-ring tw-ring-black tw-p-1">
+        get seed phrase
+      </button>
     </div>
     
     
