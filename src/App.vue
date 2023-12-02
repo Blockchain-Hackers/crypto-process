@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router'
 import { useRoute } from 'vue-router';
 import { LayoutTypes } from '@/types/layouts';
 import Default from '@/layouts/Default.vue';
