@@ -12,12 +12,17 @@
         </p>
         <button
           @click="seedPhraseDialog=true"
-          class="tw-ring-2 tw-ring-white tw-bg-primary tw-text-sm
-          tw-p-1.5 tw-px-3 tw-rounded-md">
+          class="tw-ring-2 tw-ring-white hover:tw-ring-4
+          tw-bg-primary tw-text-sm tw-p-1.5 tw-px-3 tw-rounded-md tw-transition-all tw-duration-300">
           get me a private key
         </button>
       </div>
-      <v-icon v-if="isDismissable" class="">mdi-close</v-icon>
+      <v-icon
+        v-if="isDismissable"
+        @click="handleNoticeDismiss"
+        class="tw-cursor-pointer">
+        mdi-close
+      </v-icon>
     </div>
 
     <v-dialog
@@ -38,11 +43,12 @@
 
 <script setup lang="ts">
 import SeedPhraseGen from '@/components/SeedPhraseGen.vue';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useCookies } from '@vueuse/integrations/useCookies'
 
 const props = defineProps<{
   isDismissable?: boolean
+  showNotice?: (show: boolean) => void
 }>()
 
 const seedPhraseDialog = ref(false)
@@ -54,15 +60,42 @@ const onBack = () => {
   seedPhraseDialog.value = false
 }
 
+type CookieData = {
+  hasWallet: boolean
+  hasBeenDismissed: boolean
+}
 const cookies = useCookies(['seedPhraseNotice'])
-// fields
-// noticeVisibility: boolean
-// hasWallet: boolean
+const handleNoticeVisibility = () => {
+  if (!props.showNotice) return
+  props.showNotice(false) // start with notice hidden
 
-// handle notice dismissability
+  const noticeCookie = cookies.get<CookieData>('seedPhraseNotice')
+  // first check cookie to know if we locally know if user has wallet
+  if(noticeCookie?.hasWallet) return
 
-// store dismiss state in cookie
+  // make request to check if user has wallet
+  const hasWalletBackend = false // result of backend request
+  if(hasWalletBackend) return
 
-// if cookie is set, don't show notice, but only if dismissable is true
-// or if user has created a wallet|private key
+  // if user doesn't have wallet, check if notice has been dismissed
+  if(!props.isDismissable && !hasWalletBackend) {
+    props.showNotice(true)
+    return
+  }
+
+  if(props.isDismissable && !noticeCookie?.hasBeenDismissed && !hasWalletBackend) {
+    props.showNotice(true)
+    return
+  }
+}
+onMounted(handleNoticeVisibility)
+
+const handleNoticeDismiss = () => {
+  if (!props.showNotice) return
+  props.showNotice(false)
+  cookies.set('seedPhraseNotice', {
+    hasWallet: false,
+    hasBeenDismissed: true
+  })
+}
 </script>

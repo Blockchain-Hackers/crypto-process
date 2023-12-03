@@ -1,9 +1,10 @@
 <template>
   <div class="">
-    <div v-if="true" class="tw-block tw-p-3">
+    <div v-if="showNotice" class="tw-block tw-p-3">
       <SeedPhraseNotice
         class="tw-block tw-w-full"
         :is-dismissable="true"
+        :showNotice="(show: boolean) => showNotice = show"
       />
     </div>
     
@@ -20,4 +21,6 @@ import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute()
 const router = useRouter()
+
+const showNotice = ref(true)
 </script>
