@@ -10,7 +10,7 @@
     </p>
     <p class="tw-opacity-40">
       This is your seed phrase. (1) Write down each position and word, for example,
-      <code>1 - frog.</code> (2) Store the written seed phrase in a secure location such as a safe deposit box.
+      <code>1 - {{ seedPhrase[0] }}.</code> (2) Store the written seed phrase in a secure location such as a safe deposit box.
     </p>
 
     <div class="tw-grid tw-grid-cols-2 sm:tw-grid-cols-4 tw-gap-5 tw-gap-y-3">
@@ -25,8 +25,9 @@
 
     <button
       @click="confirm"
-      class="tw-ring-1 tw-ring-white hover:tw-ring-white/80
-      tw-rounded-full tw-px-5 tw-py-1 tw-mt-10 tw-self-center tw-outline-none">
+      class="tw-ring-1 tw-ring-white hover:tw-ring-4 tw-rounded-full
+      tw-px-5 tw-py-1 tw-mt-10 tw-self-center tw-outline-none
+      tw-transition-all tw-duration-300">
       I've written down my seed phrase
     </button>
     <button

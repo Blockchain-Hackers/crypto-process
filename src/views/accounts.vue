@@ -3,7 +3,7 @@
     <div v-if="showNotice" class="tw-p-3">
       <SeedPhraseNotice
         class="tw-block tw-w-full"
-        :showNotice="(show: boolean) => showNotice = show"
+        @showNotice="handleNoticeVisibility"
       />
     </div>
 
@@ -23,4 +23,8 @@ const route = useRoute()
 const router = useRouter()
 
 const showNotice = ref(true)
+const handleNoticeVisibility = (show: boolean)  => {
+  console.log('handleNoticeVisibility', show)
+  showNotice.value = show
+}
 </script>

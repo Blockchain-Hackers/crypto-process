@@ -48,7 +48,9 @@ import { useCookies } from '@vueuse/integrations/useCookies'
 
 const props = defineProps<{
   isDismissable?: boolean
-  showNotice?: (show: boolean) => void
+}>()
+const emits = defineEmits<{
+  (e: 'show-notice', show: boolean): void
 }>()
 
 const seedPhraseDialog = ref(false)
@@ -65,34 +67,32 @@ type CookieData = {
   hasBeenDismissed: boolean
 }
 const cookies = useCookies(['seedPhraseNotice'])
-const handleNoticeVisibility = () => {
-  if (!props.showNotice) return
-  props.showNotice(false) // start with notice hidden
+const handleNoticeVisibility = async () => {
+  emits("show-notice", false) // start with notice hidden
 
   const noticeCookie = cookies.get<CookieData>('seedPhraseNotice')
   // first check cookie to know if we locally know if user has wallet
   if(noticeCookie?.hasWallet) return
 
   // make request to check if user has wallet
-  const hasWalletBackend = false // result of backend request
+  const hasWalletBackend = false
   if(hasWalletBackend) return
 
   // if user doesn't have wallet, check if notice has been dismissed
   if(!props.isDismissable && !hasWalletBackend) {
-    props.showNotice(true)
+    emits("show-notice", true)
     return
   }
 
   if(props.isDismissable && !noticeCookie?.hasBeenDismissed && !hasWalletBackend) {
-    props.showNotice(true)
+    emits("show-notice", true)
     return
   }
 }
 onMounted(handleNoticeVisibility)
 
 const handleNoticeDismiss = () => {
-  if (!props.showNotice) return
-  props.showNotice(false)
+  emits("show-notice", false)
   cookies.set('seedPhraseNotice', {
     hasWallet: false,
     hasBeenDismissed: true

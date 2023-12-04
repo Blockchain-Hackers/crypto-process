@@ -4,7 +4,7 @@
       <SeedPhraseNotice
         class="tw-block tw-w-full"
         :is-dismissable="true"
-        :showNotice="(show: boolean) => showNotice = show"
+        @showNotice="(show: boolean) => showNotice = show"
       />
     </div>
     
