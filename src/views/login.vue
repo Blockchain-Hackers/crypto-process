@@ -80,6 +80,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth';
 
 // useHead({
 //   title: 'Process - Login',
@@ -98,12 +99,15 @@ const snackbar = ref({
 
 const router = useRouter()
 const logingIn = ref(false)
+const authStore = useAuthStore()
 const handleLogin = () => {
   logingIn.value = true
+  authStore.login()
+  
 
   setTimeout(() => {
     logingIn.value = false
-    router.push('/dashboard')
+    router.push('/')
   }, 2000)
 }
 </script>
