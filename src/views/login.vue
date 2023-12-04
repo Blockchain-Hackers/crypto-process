@@ -1,10 +1,10 @@
 <template>
-  <div>
-    <div class="tw-relative tw-min-h-[100dvh]">
-      <div
-        class="tw-grid tw-items-start md:tw-grid-cols-2 tw-gap-14 sm:tw-gap-4
-        tw-max-w-7xl tw-mx-auto lg:tw-absolute tw-inset-0 tw-p-6 sm:tw-p-10 tw-z-10">
-        <div class="">
+  <div class="tw-relative">
+    <div
+      class="tw-min-h-[100dvh] tw-flex tw-items-center tw-justify-center
+      tw-max-w-2xl tw-mx-auto tw-p-6 sm:tw-p-10">
+      <div class="tw-space-y-10">
+        <div class="tw-text-center">
           <h1 class="tw-text-5xl sm:tw-text-6xl tw-font-bold">
             <span class="tw-relative tw-z-10">Automate your work using</span>
             <span
@@ -15,7 +15,7 @@
           </h1>
         </div>        
 
-        <div class="tw-bg-white sm:tw-p-6 sm:tw-border">
+        <div class="tw-bg-white tw-p-3 sm:tw-p-6 tw-border">
           <div>
             <h2 class="tw-text-3xl tw-font-bold">Welcome back!</h2>
             <form @submit.prevent="handleLogin" class="tw-mt-4 tw-text-xl">
@@ -67,7 +67,6 @@
             </form>
           </div>
         </div>
-
       </div>
     </div>
 
