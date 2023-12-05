@@ -4,7 +4,7 @@
       v-model="dialog"
       @update:modelValue="(value: boolean)=>emits('update:modelValue', value)"
       fullscreen :scrim="false">
-      <v-card class="!tw-bg-white !tw-py-10 !tw-px-4">
+      <v-card class="!tw-bg-gray-50 !tw-py-10 !tw-px-4">
         <div class="tw-mx-auto tw-flex tw-flex-col tw-gap-[72px]">
           <WorkflowItem
             v-for="(step,i) in steps" :key="i"

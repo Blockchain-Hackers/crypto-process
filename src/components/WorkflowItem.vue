@@ -1,13 +1,13 @@
 <template>
   <div
     class="!tw-ring tw-ring-primary/60 !tw-rounded-lg sm:tw-w-[600px]
-    tw-relative">
+    tw-relative tw-bg-white">
     <h3 class="tw-font-mono tw-text-lg tw-p-3">
       {{ isTrigger ? 'Trigger' : `Step ${step}`  }}
     </h3>
     <hr>
     <div class="tw-text-3xl">
-      <pre>{{ {isTrigger,isLastStep} }}</pre>
+      <pre class="tw-text-sm">{{ {isTrigger,isLastStep} }}</pre>
     </div>
 
     <div
@@ -22,7 +22,7 @@
         :class="[
             { '!tw-flex': isLastStep },
           { 'before:tw-absolute before:tw-bottom-full before:tw-w-px before:tw-bg-black/50 before:tw-h-[20px]': canAddStep },
-          { 'after:tw-absolute after:tw-top-full after:tw-w-px after:tw-bg-black/50 after:tw-h-[20px]': hasSteps },
+          { 'after:tw-absolute after:tw-top-full after:tw-w-px after:tw-bg-black/50 after:tw-h-[20px]': !isLastStep },
         ]"
         class="tw-absolute tw-top-[20px] tw-bg-gray-200 hover:tw-bg-gray-300
         tw-rounded-lg tw-transition-colors tw-duration-300 tw-p-1
