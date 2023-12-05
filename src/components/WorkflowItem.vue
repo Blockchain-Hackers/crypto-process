@@ -2,7 +2,9 @@
   <div
     class="!tw-ring tw-ring-primary/60 !tw-rounded-lg sm:tw-w-[600px]
     tw-relative">
-    <h3 class="tw-font-mono tw-text-lg tw-p-3">trigger</h3>
+    <h3 class="tw-font-mono tw-text-lg tw-p-3">
+      {{ isTrigger ? 'Trigger' : `Step ${step}`  }}
+    </h3>
     <hr>
     <div class="tw-text-3xl">
       <pre>{{ {isTrigger,isLastStep} }}</pre>
