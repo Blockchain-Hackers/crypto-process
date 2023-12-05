@@ -4,17 +4,19 @@
       v-model="dialog"
       @update:modelValue="(value: boolean)=>emits('update:modelValue', value)"
       fullscreen :scrim="false">
-      <v-card class="!tw-bg-gray-50 !tw-py-10 !tw-px-4">
-        <div class="tw-mx-auto tw-flex tw-flex-col tw-gap-[72px]">
-          <WorkflowItem
-            v-for="(step,i) in steps" :key="i"
-            :step="step"
-            :isTrigger="i === 0"
-            :isLastStep="i+1 === steps.length"
-            @add-step="addStep"
-            class=""
-          />
-        </div>
+      <v-card
+        class="!tw-bg-gray-50 !tw-pt-10 !tw-px-4
+        !tw-flex !tw-flex-col sm:!tw-items-center !tw-gap-[72px]">
+        <WorkflowItem
+          v-for="(step,i) in steps" :key="i"
+          :step="step"
+          :isTrigger="i === 0"
+          :isLastStep="i+1 === steps.length"
+          @add-step="addStep"
+          class=""
+        />
+        <!-- <div class="">
+        </div> -->
       </v-card>
     </v-dialog>
   </div>
