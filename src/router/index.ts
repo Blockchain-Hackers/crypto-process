@@ -3,6 +3,7 @@ import Login from '@/views/login.vue'
 import Register from '@/views/register.vue'
 import Home from '@/views/index.vue'
 import Accounts from '@/views/accounts.vue'
+import MailGun from '@/views/mailgun.vue'
 import { LayoutTypes } from '@/types/layouts';
 import { useAuthStore } from '@/stores/auth'
 
@@ -13,6 +14,14 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: Login,
+      meta: {
+        layout: LayoutTypes.Empty
+      }
+    },
+    {
+      path: '/mailgun',
+      name: 'mailgun',
+      component: MailGun,
       meta: {
         layout: LayoutTypes.Empty
       }
