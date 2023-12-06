@@ -1,17 +1,19 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
+import type { Function } from '@/types/workflow';
 
 export const useFunctionsStore = defineStore('functions', {
   state: () => ({
-    functions: [],
+    functions: [] as Function[],
   }),
   getters: {
     
   },
   actions: {
-    async fetchFunctions() {
+    async fetchFunctions():Promise<Function[]> {
       const {data} = await axios.get('/v1/functions')
-      console.log({data})
+      this.functions = data?.data as Function[]
+      return data?.data as Function[]
     },
   }
 });

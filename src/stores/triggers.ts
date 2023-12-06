@@ -1,17 +1,19 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
+import type { Trigger } from '@/types/workflow';
 
 export const useTriggerStore = defineStore('trigger', {
   state: () => ({
-    triggers: [],
+    triggers: [] as Trigger[],
   }),
   getters: {
     
   },
   actions: {
-    async fetchTriggers() {
+    async fetchTriggers(): Promise<Trigger[]> {
       const {data} = await axios.get('/v1/triggers')
-      console.log({data})
+      this.triggers = data?.data as Trigger[]
+      return data?.data as Trigger[]
     },
   }
 });
