@@ -1,6 +1,7 @@
 import './assets/main.css'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import axios from 'axios'
 // Vuetify
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
@@ -30,3 +31,5 @@ app.use(router)
 app.use(vuetify)
 
 app.mount('#app')
+
+axios.defaults.baseURL = import.meta.env.VITE_API_URL
