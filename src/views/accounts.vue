@@ -1,39 +1,36 @@
 <template>
   <div class="">
-    <div v-if="showNotice" class="tw-p-3">
+    <div v-if="showNotice" class="tw-block tw-p-3">
       <SeedPhraseNotice
         class="tw-block tw-w-full"
-        @showNotice="handleNoticeVisibility"
+        :is-dismissable="true"
+        @showNotice="(show: boolean) => showNotice = show"
       />
     </div>
 
-    <div class="tw-p-3">
+    <div
+      class="tw-bg-gradient-to-r tw-from-primary/10 tw-to-transparent
+      tw-p-5 tw-space-y-4">
+      <h1 class="tw-text-3xl">Create account <strong>to automate</strong></h1>
       <button
-        class="tw-bg-primary tw-text-white tw-py-4 tw-mt-10 tw-rounded-md tw-font-medium hover:tw-ring-4 tw-ring-primary/30 transition-all tw-duration-300"
-        style="width: 300px"
-        @click="createAccount"
-      >
-        Create Account
+        class="tw-p-2 tw-px-3 tw-bg-primary tw-rounded-lg tw-text-white
+        tw-ring-4 tw-ring-transparent hover:tw-ring-white tw-transition-all tw-duration-300">
+        Create account
       </button>
     </div>
+
   </div>
 </template>
 
 <script setup lang="ts">
-import SeedPhraseNotice from "@/components/SeedPhraseNotice.vue";
-import { ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import SeedPhraseNotice from '@/components/SeedPhraseNotice.vue';
+import WorkflowCreation from '@/components/WorkflowCreation.vue';
+import { ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
-const route = useRoute();
-const router = useRouter();
+const route = useRoute()
+const router = useRouter()
 
-const showNotice = ref(true);
-const handleNoticeVisibility = (show: boolean) => {
-  console.log("handleNoticeVisibility", show);
-  showNotice.value = show;
-};
-
-const createAccount = () => {
-  console.log("create account");
-};
+const showNotice = ref(true)
+const showWorkflowCreation = ref(false)
 </script>
