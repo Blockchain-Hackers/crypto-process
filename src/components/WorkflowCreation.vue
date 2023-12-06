@@ -25,6 +25,8 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import WorkflowItem from '@/components/WorkflowItem.vue';
+import { useTriggerStore } from '@/stores/triggers';
+import { useFunctionsStore } from '@/stores/functions';
 
 const props = defineProps<{
   modelValue?: boolean
@@ -32,6 +34,14 @@ const props = defineProps<{
 const emits = defineEmits<{
   (e: 'update:modelValue', value: boolean): void
 }>()
+const triggerStore = useTriggerStore()
+triggerStore.fetchTriggers()
+const functionsStore = useFunctionsStore()
+functionsStore.fetchFunctions()
+
+
+
+
 const dialog = ref(props.modelValue)
 const modelValueRef = computed(()=>props.modelValue)
 watch(modelValueRef, value => {
