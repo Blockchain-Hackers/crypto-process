@@ -6,8 +6,29 @@
       {{ isTrigger ? 'Trigger' : `Step ${step}`  }}
     </h3>
     <hr>
-    <div class="tw-text-3xl">
-      <pre class="tw-text-sm">{{ {isTrigger,isLastStep} }}</pre>
+    <div class="tw-text-3xl tw-p-3">
+      <!-- this is not rendered anywhere, just the state it generates is needed -->
+      <Tabs
+        :tab_list="fantomTabsForStepCreationStage"
+        :value="activeStepStage"
+        query_name="step_stage"
+        @model-value="($event:any) => activeStepStage = $event"
+      />
+      <div v-if="activeStepStage==='step_selection'">
+        <TriggerList v-if="isTrigger" :actions="{ onSelect: handleStoreTriggerStep }" />
+      </div>
+
+      <div v-else-if="activeStepStage==='step_form'">
+        <button
+          @click="activeStepStage=fantomTabsForStepCreationStage[0]"
+          class="tw-text-sm tw-block">
+          back
+        </button>
+
+        <div>
+          {{ getTriggerStep() }}
+        </div>
+      </div>
     </div>
 
     <div
@@ -35,6 +56,10 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import TriggerList from '@/components/molecules/TriggerList.vue';
+import Tabs from '@/components/Tabs.vue';
+import type { Trigger } from '@/types/workflow';
+import { useCookies } from '@vueuse/integrations/useCookies'
 
 const props = defineProps<{
   step: any
@@ -48,4 +73,30 @@ const emits = defineEmits<{
 const canAddStep = ref(true)
 const hasSteps = ref(true)
 // first item in the array is the trigger
+
+const activeStepStage = ref()
+const fantomTabsForStepCreationStage = [
+  {
+    name: 'step selection',
+    slug: 'step_selection',
+  },
+  {
+    name: 'step form',
+    slug: 'step_form',
+  },
+]
+
+type CookieData = {
+  trigger: Trigger,
+  steps: any[]
+}
+const cookies = useCookies(['steps'])
+const handleStoreTriggerStep = (trigger: Trigger) => {
+  console.log(trigger)
+  cookies.set('steps', {trigger})
+  activeStepStage.value = fantomTabsForStepCreationStage[1]
+}
+const getTriggerStep = () => {
+  return cookies.get<CookieData>('steps')?.trigger
+}
 </script>
