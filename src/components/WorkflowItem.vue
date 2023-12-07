@@ -16,17 +16,26 @@
       />
       <div v-if="activeStepStage==='step_selection'">
         <TriggerList v-if="isTrigger" :actions="{ onSelect: handleStoreTriggerStep }" />
+        <div v-else>
+          <pre class="tw-text-xs">Functions & Triggers?</pre>
+        </div>
       </div>
 
       <div v-else-if="activeStepStage==='step_form'">
         <button
-          @click="activeStepStage=fantomTabsForStepCreationStage[0]"
-          class="tw-text-sm tw-block">
-          back
+          @click="onBack"
+          class="tw-text-sm tw-px-2 tw-py-1 tw-bg-gray-200 hover:tw-bg-gray-300
+          tw-rounded-md tw-flex tw-gap-2 tw-items-center">
+          <v-icon>mdi-arrow-left</v-icon>
+          <span>back</span>
         </button>
 
-        <div>
-          {{ getTriggerStep() }}
+        <div class="tw-mt-3">
+          <!-- <pre class="tw-text-xs">{{ getTriggerStep() }}</pre> -->
+          <ReturnsForm
+            :fields="getTriggerStep()?.parameters"
+            :on-submit="(data:any)=>{console.log(data);}"
+          />
         </div>
       </div>
     </div>
@@ -58,6 +67,7 @@
 import { ref } from 'vue';
 import TriggerList from '@/components/molecules/TriggerList.vue';
 import Tabs from '@/components/Tabs.vue';
+import ReturnsForm from '@/components/molecules/ReturnsForm.vue';
 import type { Trigger } from '@/types/workflow';
 import { useCookies } from '@vueuse/integrations/useCookies'
 
@@ -98,5 +108,10 @@ const handleStoreTriggerStep = (trigger: Trigger) => {
 }
 const getTriggerStep = () => {
   return cookies.get<CookieData>('steps')?.trigger
+}
+
+const onBack = () => {
+  activeStepStage.value=fantomTabsForStepCreationStage[0]
+  cookies.remove('steps') // TODO: should remove the one with the id
 }
 </script>
