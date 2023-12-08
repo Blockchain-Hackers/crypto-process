@@ -17,7 +17,7 @@
       <div v-if="activeStepStage==='step_selection'">
         <TriggerList v-if="isTrigger" :actions="{ onSelect: handleStoreTriggerStep }" />
         <div v-else>
-          <pre class="tw-text-xs">Functions & Triggers?</pre>
+          <FunctionList :actions="{ onSelect: handleStoreFunctionStep }" />
         </div>
       </div>
 
@@ -32,7 +32,7 @@
 
         <div class="tw-mt-3">
           <ReturnsForm
-            :fields="getTriggerStep()?.parameters"
+            :fields="formToReturn?.parameters"
             :on-submit="(data:any)=>{console.log(data);}"
           />
         </div>
@@ -63,22 +63,24 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import TriggerList from '@/components/molecules/TriggerList.vue';
+import FunctionList from '@/components/molecules/FunctionList.vue';
 import Tabs from '@/components/Tabs.vue';
 import ReturnsForm from '@/components/molecules/ReturnsForm.vue';
-import type { Trigger } from '@/types/workflow';
+import type { Trigger, Function } from '@/types/workflow';
 import { useCookies } from '@vueuse/integrations/useCookies'
 
 const props = defineProps<{
   step: any
-  id: any
   isTrigger: boolean
   isLastStep: boolean
 }>()
 const emits = defineEmits<{
   (e: 'add-step', show: boolean): void
 }>()
+
+const id = new Date().getTime().toString()
 
 const canAddStep = ref(true)
 const hasSteps = ref(true)
@@ -104,18 +106,32 @@ type CookieData = {
   trigger: Trigger,
   steps: any[]
 }
-const cookies = useCookies(['steps'])
+const cookies = useCookies(['workflow'])
 const handleStoreTriggerStep = (trigger: Trigger) => {
-  console.log(trigger)
-  cookies.set('steps', {trigger})
+  console.log({trigger})
+  cookies.set('workflow', {trigger})
   activeStepStage.value = fantomTabsForStepCreationStage[1]
 }
 const getTriggerStep = () => {
-  return cookies.get<CookieData>('steps')?.trigger
+  return cookies.get<CookieData>('workflow')?.trigger
 }
 
 const onBack = () => {
   activeStepStage.value=fantomTabsForStepCreationStage[0]
-  cookies.remove('steps') // TODO: should remove the one with the id
+  cookies.remove('workflow') // TODO: should remove the one with the id
 }
+
+const handleStoreFunctionStep = (function_: Function) => {
+  console.log({function_})
+  const stepsCookie = cookies.get<CookieData>('workflow')?.steps
+  console.log({stepsCookie})
+  cookies.set('workflow', {steps: [...(stepsCookie ?? []), function_]})
+  activeStepStage.value = fantomTabsForStepCreationStage[1]
+}
+const getFunctionStep = () => {
+  // TODO: should search for the one with the id
+  return cookies.get<CookieData>('workflow')?.steps[0]
+}
+
+const formToReturn = computed(()=>props.isTrigger ? getTriggerStep() : getFunctionStep())
 </script>
