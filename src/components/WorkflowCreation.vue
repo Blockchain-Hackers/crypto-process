@@ -9,14 +9,14 @@
         !tw-flex !tw-flex-col sm:!tw-items-center !tw-gap-[72px]">
         <WorkflowItem
           v-for="(step,i) in steps" :key="i"
+          :id="i"
           :step="step"
           :isTrigger="i === 0"
           :isLastStep="i+1 === steps.length"
           @add-step="addStep"
           class=""
         />
-        <!-- <div class="">
-        </div> -->
+        {{ steps }}
       </v-card>
     </v-dialog>
   </div>

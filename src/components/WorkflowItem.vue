@@ -11,7 +11,7 @@
       <Tabs
         :tab_list="fantomTabsForStepCreationStage"
         :value="activeStepStage"
-        query_name="step_stage"
+        :query_name="'step_stage_'+id"
         @model-value="($event:any) => activeStepStage = $event"
       />
       <div v-if="activeStepStage==='step_selection'">
@@ -31,7 +31,6 @@
         </button>
 
         <div class="tw-mt-3">
-          <!-- <pre class="tw-text-xs">{{ getTriggerStep() }}</pre> -->
           <ReturnsForm
             :fields="getTriggerStep()?.parameters"
             :on-submit="(data:any)=>{console.log(data);}"
@@ -73,6 +72,7 @@ import { useCookies } from '@vueuse/integrations/useCookies'
 
 const props = defineProps<{
   step: any
+  id: any
   isTrigger: boolean
   isLastStep: boolean
 }>()
@@ -93,6 +93,10 @@ const fantomTabsForStepCreationStage = [
   {
     name: 'step form',
     slug: 'step_form',
+  },
+  {
+    name: 'created',
+    slug: 'created',
   },
 ]
 
