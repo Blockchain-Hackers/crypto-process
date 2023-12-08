@@ -1,5 +1,5 @@
 <template>
-  <ul class="tw-grid tw-grid-cols-2 tw-gap-2">
+  <ul class="tw-grid sm:tw-grid-cols-2 tw-gap-2">
     <li
       v-for="(trigger,i) in triggers" :key="i"
       @click="props.actions.onSelect(trigger)"

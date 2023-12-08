@@ -35,7 +35,7 @@ const handleForm = () => {
 const fieldsWithValueRef = ref(props.fields.map((field) => {
   return {
     ...field,
-    valueRef: ''
+    valueRef: field.formElement === 'object' ? {key:'',value:''} : ''
   }
 }))
 </script>
