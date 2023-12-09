@@ -13,15 +13,10 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
-import SeedPhraseNotice from "@/components/SeedPhraseNotice.vue";
-import WorkflowCreation from "@/components/WorkflowCreation.vue";
 import { useRoute, useRouter } from "vue-router";
 
 const route = useRoute();
 const router = useRouter();
-
-const showNotice = ref(true);
-const showWorkflowCreation = ref(false);
 </script>
