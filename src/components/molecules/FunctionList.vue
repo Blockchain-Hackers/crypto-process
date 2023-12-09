@@ -16,7 +16,7 @@ import type { Function } from '@/types/workflow';
 
 const props = defineProps<{
   actions: {
-    onSelect: (trigger: Function) => void
+    onSelect: (function_: Function) => void
   }
 }>()
 
