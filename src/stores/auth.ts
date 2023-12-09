@@ -28,7 +28,7 @@ export const useAuthStore = defineStore("auth", {
       cookies.remove("user");
       cookies.remove("token");
       useWorkflowStore().clearWorkflow();
-      nextTick(() => window.location.reload())
+      setTimeout(() => window.location.reload())
     },
   },
 });
