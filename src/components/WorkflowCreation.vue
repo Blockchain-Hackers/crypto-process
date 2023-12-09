@@ -4,10 +4,11 @@
       v-model="dialog"
       @update:modelValue="(value: boolean)=>emits('update:modelValue', value)"
       fullscreen :scrim="false">
-      <div class="tw-bg-gray-50 tw-px-3 tw-py-2 tw-text-right">
-        <div class="tw-max-w-[600px] tw-mx-auto tw-text-xl">
+      <div class="tw-bg-gray-50 tw-px-3 tw-py-2">
+        <div class="tw-text-primary tw-max-w-[600px] tw-mx-auto tw-text-xl tw-flex tw-justify-between">
+          <h2 class="tw-font-bold">Create a Workflow</h2>
           <v-icon
-            class="tw-text-primary tw-cursor-pointer"
+            class="tw-cursor-pointer"
             @click="closeDialog" >
             mdi-close
           </v-icon>
