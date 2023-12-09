@@ -1,7 +1,7 @@
 import type { User } from "@/types/auth";
 import { defineStore } from "pinia";
 import { useCookies } from "@vueuse/integrations/useCookies";
-import { useWorkflowStore } from "./workflow";
+import { useWorkflowStore } from './workflow';
 
 const cookies = useCookies(["user"]);
 export const useAuthStore = defineStore("auth", {
@@ -27,7 +27,8 @@ export const useAuthStore = defineStore("auth", {
       cookies.remove("isLoggedIn");
       cookies.remove("user");
       cookies.remove("token");
-      useWorkflowStore().clearWorkflow();
+      const workflowStore = useWorkflowStore();
+      workflowStore.clearWorkflowCreation();
       setTimeout(() => window.location.reload())
     },
   },
