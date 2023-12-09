@@ -15,15 +15,6 @@
 
 <script setup>
 import { ref } from "vue";
-import {
-  Dialog,
-  DialogPanel,
-  DialogTitle,
-  TransitionChild,
-  TransitionRoot,
-} from "@headlessui/vue";
-import { ExclamationTriangleIcon } from "@heroicons/vue/24/outline";
-
 import SeedPhraseNotice from "@/components/SeedPhraseNotice.vue";
 import WorkflowCreation from "@/components/WorkflowCreation.vue";
 import { useRoute, useRouter } from "vue-router";
