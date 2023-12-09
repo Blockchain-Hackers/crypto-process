@@ -1,7 +1,7 @@
 <template>
   <form
     @submit.prevent="handleForm"
-    class="tw-flex tw-flex-col tw-gap-2">
+    class="tw-flex tw-flex-col tw-gap-4">
     <ReturnsFormField
       v-for="field in fieldsWithValueRef" :key="field.name"
       v-model="field.valueRef"
@@ -35,7 +35,7 @@ const handleForm = () => {
 const fieldsWithValueRef = ref(props.fields.map((field) => {
   return {
     ...field,
-    valueRef: field.formElement === 'object' ? {key:'',value:''} : ''
+    valueRef: field.formElement === 'object' ? [{key:'',value:''}] : ''
   }
 }))
 </script>

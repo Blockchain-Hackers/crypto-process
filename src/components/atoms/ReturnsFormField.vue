@@ -1,22 +1,39 @@
 <template>
   <label class="tw-text-base">
-    <span class="tw-block">{{ field?.hint ?? field.name }}</span>
+    <span class="tw-inline-block">{{ field?.hint ?? field.name }}</span>
     <template v-if="field.formElement === 'object'">
-      <div class="tw-flex tw-gap-2">
-        <input
-          v-model="value.key"
-          type="text"
-          placeholder="key"
-          :class="elementClass"
-          class="tw-w-full"
-        />
-        <input
-          v-model="value.value"
-          :type="field.formType"
-          placeholder="value"
-          :class="elementClass"
-          class="tw-w-full"
-        />
+      <span
+        @click="addKeyValue"
+        type="button"
+        class="tw-h-6 tw-w-6 tw-rounded-full
+        tw-ml-3 tw-mb-2 tw-cursor-pointer">
+        <v-icon>mdi-plus</v-icon>
+      </span>
+      <div class="tw-flex tw-flex-col tw-gap-2">
+        <div v-for="(each,i) in value" class="tw-flex tw-gap-2 tw-items-center">
+          <div class="tw-flex tw-w-full tw-gap-2">
+            <input
+              v-model="each.key"
+              type="text"
+              placeholder="key"
+              :class="elementClass"
+              class="tw-w-full"
+            />
+            <input
+              v-model="each.value"
+              :type="field.formType"
+              placeholder="value"
+              :class="elementClass"
+              class="tw-w-full"
+            />
+          </div>
+          <span
+            @click="removeKeyValue(i)"
+            v-if="value.length > 1"
+            class="tw-h-6 tw-w-6 tw-rounded-full tw-cursor-pointer">
+            <v-icon>mdi-minus</v-icon>
+          </span>
+        </div>
       </div>
     </template>
 
@@ -97,4 +114,10 @@ watch(value, (newValue) => {
   emits('update:modelValue', newValue)
 }, { immediate: true, deep: true })
 
+const addKeyValue = () => {
+  value.value.push({key:'',value:''})
+}
+const removeKeyValue = (index: number) => {
+  value.value.splice(index, 1)
+}
 </script>

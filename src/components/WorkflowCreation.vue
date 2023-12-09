@@ -4,7 +4,7 @@
       v-model="dialog"
       @update:modelValue="(value: boolean)=>emits('update:modelValue', value)"
       fullscreen :scrim="false">
-      <div class="tw-bg-gray-50 tw-px-3 tw-py-2">
+      <div class="tw-bg-white tw-px-3 tw-py-2 tw-relative tw-z-10 tw-border-b">
         <div class="tw-text-primary tw-max-w-[600px] tw-mx-auto tw-text-xl tw-flex tw-justify-between">
           <h2 class="tw-font-bold">Create a Workflow</h2>
           <v-icon
