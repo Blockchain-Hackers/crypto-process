@@ -13,11 +13,36 @@
     >
       <h1 class="tw-text-3xl">Create account <strong>to automate</strong></h1>
       <button
+        @click="showDialog = true"
         class="tw-p-2 tw-px-3 tw-bg-primary tw-rounded-lg tw-text-white tw-ring-4 tw-ring-transparent hover:tw-ring-white tw-transition-all tw-duration-300"
       >
         Create account {{}}
       </button>
     </div>
+    <v-dialog
+      v-model="showDialog"
+      :scrim="false"
+      transition="dialog-bottom-transition"
+    >
+      <v-card class="!tw-bg-primary tw-px-8">
+        <div class="text-center">
+          <v-select
+            v-model="selectedAccount"
+            :items="accountsType"
+            label="Account Type"
+            style="color: white"
+          ></v-select>
+          <v-menu :selectedAccount="selectedAccount">
+            <v-list>
+              <v-list-item v-for="(item, index) in items" :key="index">
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </div>
+      </v-card>
+      <!-- <v-card class="!tw-bg-primary"> Hello </v-card> -->
+    </v-dialog>
   </div>
 </template>
 
@@ -29,5 +54,16 @@ import SeedPhraseNotice from '@/components/SeedPhraseNotice.vue';
 const route = useRoute();
 const router = useRouter();
 
-const showNotice = ref(true)
+const showNotice = ref(true);
+const showDialog = ref(false);
+const showWorkflowCreation = ref(false);
+const items = ref([
+  { title: "Click Me" },
+  { title: "Click Me" },
+  { title: "Click Me" },
+  { title: "Click Me 2" },
+]);
+
+const accountsType = ref(["mailgun", "private key"]);
+const selectedAccount = ref("mailgun");
 </script>
