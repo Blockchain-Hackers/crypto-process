@@ -93,6 +93,13 @@ export const useWorkflowStore = defineStore('workflow', {
       }
       cookies.set('workflow', payload)
       this.workflows = payload
+    },
+    clearWorkflowCreation() {
+      cookies.remove('workflow')
+      this.workflows = {
+        trigger: null,
+        steps: []
+      }
     }
   }
 })
