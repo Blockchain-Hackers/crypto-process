@@ -31,15 +31,14 @@
         </button>
 
         <div class="tw-mt-3">
-          <ReturnsForm
-            :fields="formToReturn?.formData.parameters!"
+          <pre class="tw-text-xs">{{ formToReturn }}</pre>
+          <!-- <ReturnsForm
+            :fields="formToReturn?.formData?.parameters!"
             :on-submit="(data:any)=>{console.log(data);}"
-          />
+          /> -->
         </div>
       </div>
     </div>
-
-    <!-- <pre class="tw-text-xs">{{ {canAddStep, hasSteps, isLastStep, isTrigger} }}</pre> -->
 
     <div
       v-show="canAddStep || hasSteps"

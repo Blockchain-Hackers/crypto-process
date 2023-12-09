@@ -7,7 +7,6 @@
       <v-card
         class="!tw-bg-gray-50 !tw-pt-10 !tw-px-4
         !tw-flex !tw-flex-col sm:!tw-items-center !tw-gap-[72px]">
-        <!-- <pre>{{ workflowStore }}</pre> -->
         <WorkflowItem
           :step="trigger"
           :isTrigger="true"

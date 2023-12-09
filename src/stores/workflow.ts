@@ -1,4 +1,10 @@
-import type { Trigger, Function, WorkflowCookieData } from '@/types/workflow';
+import type {
+  Trigger,
+  Function,
+  WorkflowCookieData,
+  WorkflowFunctionData,
+  WorkflowTriggerData
+} from '@/types/workflow';
 import { useCookies } from '@vueuse/integrations/useCookies'
 import { defineStore } from 'pinia';
 
@@ -21,36 +27,40 @@ export const useWorkflowStore = defineStore('workflow', {
   },
   actions: {
     setSelectedTriggerStep({trigger, localId}: {trigger:Trigger, localId:string}) {
-      const existingTrigger = cookies.get<WorkflowCookieData>('workflow')?.trigger
-      if(existingTrigger?.localId === localId) {
-        return
+      const triggerPayload:WorkflowTriggerData = {
+        _id: trigger._id,
+        localId,
+        canAddNextStep: true,
+        formData: null
       }
 
       cookies.set('workflow', {
-        trigger: {
-          localId,
-          canAddNextStep: true,
-          formData: null,
-        },
+        trigger: triggerPayload,
         steps: cookies.get<WorkflowCookieData>('workflow')?.steps ?? []
       })
     },
     setSelectedFunctionStep({function_, localId}: {function_:Function, localId:string}) {
       const stepsCookie = cookies.get<WorkflowCookieData>('workflow')?.steps
       const existingSteps = [...(stepsCookie ?? [])]
-      // check existing steps for the id
-      existingSteps.map((step) => {
-        if(step.localId === localId) {
-          return
+      const stepPayload:WorkflowFunctionData = {
+        _id: function_._id,
+        localId,
+        canAddNextStep: false,
+        formData: null
+      }
+
+      let stepExists = false
+      existingSteps.map((step,i) => {
+        if (step.localId === localId) {
+          existingSteps[i] = stepPayload
+          stepExists = true
         }
       })
-        
+      if(!stepExists) existingSteps.push(stepPayload)
+
       cookies.set('workflow', {
         trigger: cookies.get<WorkflowCookieData>('workflow')?.trigger,
-        steps: [
-          ...existingSteps,
-          { localId, canAddNextStep: false, formData: null }
-        ]
+        steps: existingSteps
       })
     },
     createNextStep() {
@@ -60,7 +70,12 @@ export const useWorkflowStore = defineStore('workflow', {
         trigger: cookies.get<WorkflowCookieData>('workflow')?.trigger,
         steps: [
           ...existingSteps,
-          { localId, canAddNextStep: false, formData: null }
+          {
+            _id: null,
+            localId,
+            canAddNextStep: false,
+            formData: null
+          }
         ]
       }
       cookies.set('workflow', payload)
