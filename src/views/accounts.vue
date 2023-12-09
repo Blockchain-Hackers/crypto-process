@@ -30,5 +30,4 @@ const route = useRoute();
 const router = useRouter();
 
 const showNotice = ref(true)
-const showWorkflowCreation = ref(false)
 </script>

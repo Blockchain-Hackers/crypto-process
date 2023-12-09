@@ -1,13 +1,5 @@
 <template>
   <div class="">
-    <div v-if="showNotice" class="tw-block tw-p-3">
-      <SeedPhraseNotice
-        class="tw-block tw-w-full"
-        :is-dismissable="true"
-        @showNotice="(show: boolean) => showNotice = show"
-      />
-    </div>
-
     <div
       class="tw-bg-gradient-to-r tw-from-primary/10 tw-to-transparent tw-p-5 tw-space-y-4"
     >
@@ -56,7 +48,7 @@
         </div>
       </div>
     </div>
-    <div
+    <!-- <div
       class="tw-bg-white tw-rounded-lg tw-shadow-md"
       v-for="step in run?.steps"
     >
@@ -64,7 +56,6 @@
         <h2 class="tw-text-lg tw-font-semibold">{{ step.name }}</h2>
       </div>
       <div class="tw-p-4 tw-space-y-2">
-        <!-- <h3 class="tw-text-md tw-font-semibold">{{ step.name }}</h3> -->
         <p class="tw-text-gray-600">
           Status: {{ step.success ? "Successful" : "Failed" }}
         </p>
@@ -91,13 +82,11 @@
           />
         </div>
       </div>
-    </div>
+    </div> -->
   </section>
 </template>
 
 <script setup lang="ts">
-import SeedPhraseNotice from "@/components/SeedPhraseNotice.vue";
-import WorkflowCreation from "@/components/WorkflowCreation.vue";
 import { useAuthStore } from "@/stores/auth";
 import axios from "axios";
 import { onMounted, ref } from "vue";
@@ -106,8 +95,6 @@ import { useRoute, useRouter } from "vue-router";
 const route = useRoute();
 const router = useRouter();
 
-const showNotice = ref(true);
-const showWorkflowCreation = ref(false);
 const authStore = useAuthStore();
 const run = ref<{
   _id: string;
