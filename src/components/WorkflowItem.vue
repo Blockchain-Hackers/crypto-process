@@ -3,7 +3,11 @@
     class="!tw-ring tw-ring-primary/60 !tw-rounded-lg sm:tw-w-[600px]
     tw-relative tw-bg-white">
     <h3 class="tw-font-mono tw-text-lg tw-p-3">
-      {{ isTrigger ? 'Trigger' : `Step ${step}`  }}
+      {{
+        isTrigger ?
+          `${ step?.name && activeStepStage==='step_form' ? step?.name : 'Trigger'}` :
+          `${(step?.name && activeStepStage==='step_form') ? step?.name : 'Step'}`
+      }}
     </h3>
     <hr>
     <div class="tw-text-3xl tw-p-3">

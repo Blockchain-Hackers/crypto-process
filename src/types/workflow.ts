@@ -51,6 +51,7 @@ export type Trigger = {
 export type StepData<T> = {
   _id: string | null,
   localId: string,
+  name: string | undefined,
   canAddNextStep: boolean,
   formData: T | null,
 }

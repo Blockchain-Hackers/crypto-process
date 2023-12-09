@@ -38,6 +38,7 @@ export const useWorkflowStore = defineStore('workflow', {
       const triggerPayload:WorkflowTriggerData = {
         _id: trigger._id,
         localId,
+        name: trigger.name,
         canAddNextStep: true,
         formData: null
       }
@@ -46,6 +47,7 @@ export const useWorkflowStore = defineStore('workflow', {
         trigger: triggerPayload,
         steps: cookies.get<WorkflowCookieData>('workflow')?.steps ?? []
       })
+      this.workflows.trigger = triggerPayload
     },
     setSelectedFunctionStep({function_, localId}: {function_:Function, localId:string}) {
       const stepsCookie = cookies.get<WorkflowCookieData>('workflow')?.steps
@@ -53,6 +55,7 @@ export const useWorkflowStore = defineStore('workflow', {
       const stepPayload:WorkflowFunctionData = {
         _id: function_._id,
         localId,
+        name: function_.name,
         canAddNextStep: false,
         formData: null
       }
@@ -70,6 +73,7 @@ export const useWorkflowStore = defineStore('workflow', {
         trigger: cookies.get<WorkflowCookieData>('workflow')?.trigger,
         steps: existingSteps
       })
+      this.workflows.steps = existingSteps
     },
     createNextStep() {
       const existingSteps = cookies.get<WorkflowCookieData>('workflow')?.steps ?? []
@@ -81,6 +85,7 @@ export const useWorkflowStore = defineStore('workflow', {
           {
             _id: null,
             localId,
+            name: undefined,
             canAddNextStep: false,
             formData: null
           }
