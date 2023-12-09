@@ -5,6 +5,7 @@ import History from "@/views/history.vue";
 import Home from "@/views/index.vue";
 import { LayoutTypes } from "@/types/layouts";
 import Login from "@/views/login.vue";
+import MailGun from "@/views/mailgun.vue";
 import Register from "@/views/register.vue";
 import { useAuthStore } from "@/stores/auth";
 import singleRunVue from "@/views/single-run.vue";
@@ -12,6 +13,14 @@ import singleRunVue from "@/views/single-run.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: "/mailgun",
+      name: "mailgun",
+      component: MailGun,
+      meta: {
+        layout: LayoutTypes.Empty,
+      },
+    },
     {
       path: "/login",
       name: "login",
