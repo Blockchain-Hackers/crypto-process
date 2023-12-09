@@ -1,5 +1,13 @@
 <template>
   <div class="">
+    <div v-if="showNotice" class="tw-block tw-p-3">
+      <SeedPhraseNotice
+        class="tw-block tw-w-full"
+        :is-dismissable="false"
+        @showNotice="(show: boolean) => showNotice = show"
+      />
+    </div>
+
     <div
       class="tw-bg-gradient-to-r tw-from-primary/10 tw-to-transparent tw-p-5 tw-space-y-4"
     >
@@ -16,7 +24,11 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import SeedPhraseNotice from '@/components/SeedPhraseNotice.vue';
 
 const route = useRoute();
 const router = useRouter();
+
+const showNotice = ref(true)
+const showWorkflowCreation = ref(false)
 </script>
