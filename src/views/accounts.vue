@@ -14,23 +14,17 @@
     <v-dialog
       v-model="showDialog"
       :scrim="false"
-      fullscreen
       transition="dialog-bottom-transition"
     >
-      <v-card class="!tw-bg-primary">
-        Hello
-
+      <v-card class="!tw-bg-primary tw-px-8">
         <div class="text-center">
           <v-select
-            v-model="location"
-            :items="locations"
-            label="Location"
+            v-model="selectedAccount"
+            :items="accountsType"
+            label="Account Type"
+            style="color: white"
           ></v-select>
-          <v-menu :location="location">
-            <template v-slot:activator="{ props }">
-              <v-btn color="primary" dark v-bind="props"> Dropdown </v-btn>
-            </template>
-
+          <v-menu :selectedAccount="selectedAccount">
             <v-list>
               <v-list-item v-for="(item, index) in items" :key="index">
                 <v-list-item-title>{{ item.title }}</v-list-item-title>
@@ -72,6 +66,6 @@ const items = ref([
   { title: "Click Me 2" },
 ]);
 
-const locations = ref(["top", "bottom", "start", "end", "center"]);
-const location = ref("end");
+const accountsType = ref(["mailgun", "private key"]);
+const selectedAccount = ref("mailgun");
 </script>
