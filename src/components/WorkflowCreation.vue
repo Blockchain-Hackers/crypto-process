@@ -15,8 +15,7 @@
           @add-step="addStep"
           class=""
         />
-        <!-- <div class="">
-        </div> -->
+        {{ steps }}
       </v-card>
     </v-dialog>
   </div>
@@ -35,11 +34,10 @@ const emits = defineEmits<{
   (e: 'update:modelValue', value: boolean): void
 }>()
 const triggerStore = useTriggerStore()
-triggerStore.fetchTriggers()
+// prevent fetching triggers repeatedly
+if(!triggerStore.hasTriggers) triggerStore.fetchTriggers()
 const functionsStore = useFunctionsStore()
-functionsStore.fetchFunctions()
-
-
+if(!functionsStore.hasFunctions) functionsStore.fetchFunctions()
 
 
 const dialog = ref(props.modelValue)

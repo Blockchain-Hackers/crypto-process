@@ -7,7 +7,7 @@ export const useTriggerStore = defineStore('trigger', {
     triggers: [] as Trigger[],
   }),
   getters: {
-    
+    hasTriggers: (state) => state.triggers.length > 0,
   },
   actions: {
     async fetchTriggers(): Promise<Trigger[]> {

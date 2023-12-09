@@ -1,9 +1,15 @@
 export type FunctionParameter = {
+  _id: string;
   name: string;
   type: string;
   path: string;
-  dataType: string;
-  _id: string;
+  formElement: string; // input, select, textarea
+  formType: string; // text, number, email, password, checkbox, radio, select, textarea
+  hint: string;
+  options?: {
+    name: string;
+    value: string | number;
+  }[]
   created_at: string;
   updated_at: string;
 }
@@ -23,6 +29,14 @@ export type TriggerParameter = {
   name: string;
   value: string;
   type: string;
+  formElement: string; // input, select, textarea
+  formType: string; // text, number, email, password, checkbox, radio, select, textarea
+  hint?: string;
+  // this options should probably be called "selectOptions"
+  options?: {
+    name: string;
+    value: string | number;
+  }[]
 }
 export type Trigger = {
   _id: string;

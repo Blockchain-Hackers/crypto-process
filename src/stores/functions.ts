@@ -7,7 +7,7 @@ export const useFunctionsStore = defineStore('functions', {
     functions: [] as Function[],
   }),
   getters: {
-    
+    hasFunctions: (state) => state.functions.length > 0,
   },
   actions: {
     async fetchFunctions():Promise<Function[]> {
