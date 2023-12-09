@@ -8,14 +8,14 @@
           type="text"
           placeholder="key"
           :class="elementClass"
-          class="tw-flex-1"
+          class="tw-w-full"
         />
         <input
           v-model="value.value"
           :type="field.formType"
           placeholder="value"
           :class="elementClass"
-          class="tw-flex-1"
+          class="tw-w-full"
         />
       </div>
     </template>

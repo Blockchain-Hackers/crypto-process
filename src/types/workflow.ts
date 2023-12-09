@@ -47,3 +47,19 @@ export type Trigger = {
   updated_at: string;
   __v: number;
 }
+
+export type StepData<T> = {
+  _id: string | null,
+  localId: string,
+  name: string | undefined,
+  canAddNextStep: boolean,
+  formData: T | null,
+}
+
+export type WorkflowTriggerData = StepData<Trigger>
+export type WorkflowFunctionData = StepData<Function>
+export type WorkflowCookieData = {
+  trigger: WorkflowTriggerData | null
+} & {
+  steps: WorkflowFunctionData[]
+}
