@@ -44,5 +44,11 @@ const navItems = [
     path: '/accounts',
     icon: 'mdi-key-variant',
   },
+  {
+    name: 'Run History',
+    path: '/history',
+    icon: 'mdi-view-list',
+  },
+  
 ]
 </script>
