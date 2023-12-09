@@ -31,11 +31,10 @@
         </button>
 
         <div class="tw-mt-3">
-          <pre class="tw-text-xs">{{ formToReturn }}</pre>
-          <!-- <ReturnsForm
-            :fields="formToReturn?.formData?.parameters!"
+          <ReturnsForm
+            :fields="formToReturn?.parameters!"
             :on-submit="(data:any)=>{console.log(data);}"
-          /> -->
+          />
         </div>
       </div>
     </div>
@@ -119,7 +118,10 @@ const handleStoreFunctionStep = (function_: Function) => {
   activeStepStage.value = fantomTabsForStepCreationStage[1]
 }
 
-const formToReturn = computed(()=>props.isTrigger ? workflowStore.getTrigger : workflowStore.getStep(localId.value))
+const formToReturn = computed(()=>{
+  const stepInfo = props.isTrigger ? workflowStore.getTrigger : workflowStore.getStep(localId.value)
+  return workflowStore.getTriggerOrFunctionById({_id: stepInfo?._id ?? '', isTrigger: props.isTrigger})
+})
 const onBack = () => {
   activeStepStage.value=fantomTabsForStepCreationStage[0]
 }

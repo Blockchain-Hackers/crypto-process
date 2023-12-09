@@ -7,6 +7,8 @@ import type {
 } from '@/types/workflow';
 import { useCookies } from '@vueuse/integrations/useCookies'
 import { defineStore } from 'pinia';
+import { useTriggerStore } from './triggers';
+import { useFunctionsStore } from './functions';
 
 const cookies = useCookies(["workflow"]);
 export const useWorkflowStore = defineStore('workflow', {
@@ -23,7 +25,13 @@ export const useWorkflowStore = defineStore('workflow', {
     getStep: () => (localId:string) => {
       const steps = cookies.get<WorkflowCookieData>('workflow')?.steps
       return steps.find((step) => step.localId === localId) ?? null
-    }
+    },
+    getTriggerOrFunctionById: () => ({_id, isTrigger}: {_id:string, isTrigger:boolean}) => {
+      if (isTrigger) {
+        return useTriggerStore().triggers.find((trigger) => trigger._id === _id)
+      }
+      return useFunctionsStore().functions.find((function_) => function_._id === _id)
+    },
   },
   actions: {
     setSelectedTriggerStep({trigger, localId}: {trigger:Trigger, localId:string}) {
