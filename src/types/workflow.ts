@@ -59,7 +59,7 @@ export type StepData<T> = {
 export type WorkflowTriggerData = StepData<Trigger>
 export type WorkflowFunctionData = StepData<Function>
 export type WorkflowCookieData = {
-  trigger: WorkflowTriggerData,
+  trigger: WorkflowTriggerData | null
 } & {
   steps: WorkflowFunctionData[]
 }
