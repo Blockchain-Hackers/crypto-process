@@ -4,6 +4,16 @@
       v-model="dialog"
       @update:modelValue="(value: boolean)=>emits('update:modelValue', value)"
       fullscreen :scrim="false">
+      <div class="tw-bg-gray-50 tw-px-3 tw-py-2 tw-text-right">
+        <div class="tw-max-w-[600px] tw-mx-auto tw-text-xl">
+          <v-icon
+            class="tw-text-primary tw-cursor-pointer"
+            @click="closeDialog" >
+            mdi-close
+          </v-icon>
+        </div>
+      </div>
+
       <v-card
         class="!tw-bg-gray-50 !tw-pt-10 !tw-px-4
         !tw-flex !tw-flex-col sm:!tw-items-center !tw-gap-[72px]">

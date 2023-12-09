@@ -26,6 +26,7 @@ export const useAuthStore = defineStore("auth", {
       cookies.remove("isLoggedIn");
       cookies.remove("user");
       cookies.remove("token");
+      window.location.reload();
     },
   },
 });
