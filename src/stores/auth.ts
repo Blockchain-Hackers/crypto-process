@@ -14,6 +14,7 @@ export const useAuthStore = defineStore("auth", {
   getters: {
     getUser: (state) => state.user,
     getToken: (state) => state.token,
+    getAccounts: (state) => state.user?.accounts || [],
   },
   actions: {
     register(
@@ -66,5 +67,15 @@ export const useAuthStore = defineStore("auth", {
       workflowStore.clearWorkflowCreation();
       setTimeout(() => window.location.reload())
     },
+    deleteAccount({accountId}: {accountId: string}) {
+      return new Promise(async (resolve, reject) => {
+        try {
+          await axios.delete(`/v1/accounts/${accountId}`)
+          resolve(true);
+        } catch (error) {
+          reject(error)
+        }
+      })
+    }
   },
 });

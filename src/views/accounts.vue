@@ -32,7 +32,33 @@
     </div>
 
     <div class="tw-p-5">
+      <div class="">
+        <h2 class="tw-font-medium tw-text-xl tw-mb-4">All your accounts would be listed below</h2>
+        <div v-for="(account,i) in authStore.getAccounts" :key="i" class="tw-border-b tw-border-gray-300 last-of-type:tw-border-b-0">
+          <div class="tw-flex tw-items-center tw-justify-between tw-p-3 tw-py-1 tw-bg-white">
+            <div class="tw-flex tw-flex-wrap">
+              <v-icon class="!tw-text-4xl !tw-text-slate-400">mdi-text-account</v-icon>
+              <div class="tw-text-xl tw-ml-3 sm:tw-flex tw-gap-4 tw-text-primary">
+                <div>
+                  <h2 class="tw-font-medium">{{ account.name }}</h2>
+                  <p class="tw-text-gray-500 tw-text-sm">{{ account.type }}</p>
+                </div>
+                <!-- <p>gismozfexie@yahoo.com</p> -->
+              </div>
+            </div>
+            <div class="tw-flex tw-items-center">
+              <v-icon
+                @click="handleDeleteAccount(account)"
+                class="tw-cursor-pointer !tw-text-primary/50 hover:!tw-text-black">
+                mdi-delete
+              </v-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div
+        v-if="!hasAccounts"
         class="tw-border-4 tw-border-dashed tw-rounded-xl tw-h-60
         tw-flex tw-flex-col tw-items-center tw-justify-center">
         <v-icon class="!tw-text-7xl tw-text-gray-400">mdi-bat</v-icon>
@@ -43,17 +69,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import SeedPhraseNotice from "@/components/SeedPhraseNotice.vue";
+import { useAuthStore } from "@/stores/auth";
+import type { Account } from "@/types/auth";
 
 const route = useRoute();
 const router = useRouter();
+const authStore = useAuthStore();
 
 const showNotice = ref(true);
-
-const accountsType = ref(["mailgun"]);
-const selectedAccount = ref("mailgun");
 
 // const navigateToMail = () => {
 //   switch (selectedAccount.value) {
@@ -74,4 +100,9 @@ const items = [
   { title: 'Mailgun', slug: 'mailgun' },
   { title: 'Private key', slug: 'private-key' }
 ]
+
+const hasAccounts = computed(()=>authStore.getAccounts.length > 0)
+const handleDeleteAccount = (account: Account) => {
+  authStore.deleteAccount({ accountId: account._id })
+}
 </script>
