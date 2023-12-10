@@ -185,12 +185,10 @@ export const useWorkflowStore = defineStore("workflow", {
             },
             {}
           ),
-          formData: trigger?.formData,
         },
         steps: steps?.map((step) => ({
           _id: step._id,
           name: step.name,
-          formData: step.formData,
           outputs: step.outputs?.reduce((acc: Record<string, any>, output) => {
             acc[output.name] = output.type;
             return acc;

@@ -5,6 +5,7 @@ export type FunctionParameter = {
   path: string;
   formElement: string; // input, select, textarea
   formType: string; // text, number, email, password, checkbox, radio, select, textarea
+  formAccountType?: string; // account, password
   hint: string;
   options?: {
     name: string;
@@ -33,6 +34,7 @@ export type TriggerParameter = {
   type: string;
   formElement: string; // input, select, textarea
   formType: string; // text, number, email, password, checkbox, radio, select, textarea
+  formAccountType?: string; // account, password
   hint?: string;
   // this options should probably be called "selectOptions"
   options?: {
