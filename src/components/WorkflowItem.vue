@@ -46,16 +46,15 @@
     <div
       v-show="canAddStep || hasSteps"
       :class="[
-        { 'after:tw-absolute after:tw-top-full after:tw-w-px after:tw-bg-black/50 after:tw-h-[72px]': !isLastStep },
+        { 'after:tw-absolute after:tw-top-full after:tw-w-px after:tw-bg-orange-500 after:tw-h-[72px]': !isLastStep },
       ]"
       class="tw-absolute tw-inset-x-0 tw-bottom-0
       tw-flex tw-justify-center">
       <button
         @click="emits('add-step')"
         :class="[
-            { '!tw-flex': isLastStep && canAddStep },
-          { 'before:tw-absolute before:tw-bottom-full before:tw-w-px before:tw-bg-black/50 before:tw-h-[20px]': canAddStep || hasSteps },
-          { 'after:tw-absolute after:tw-top-full after:tw-w-px after:tw-bg-black/50 after:tw-h-[20px]': !isLastStep },
+          { '!tw-flex': isLastStep && canAddStep },
+          { 'before:tw-absolute before:tw-bottom-full before:tw-w-px before:tw-bg-orange-500 before:tw-h-[20px]': canAddStep || hasSteps },
         ]"
         class="tw-absolute tw-top-[20px] tw-bg-gray-200 hover:tw-bg-gray-300
         tw-rounded-lg tw-transition-colors tw-duration-300 tw-p-1

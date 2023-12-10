@@ -117,7 +117,7 @@ const elementClass = 'tw-ring-1 tw-ring-gray-300 tw-px-2 tw-py-1 tw-rounded-md t
 
 const value = ref(props.modelValue)
 watch(value, (newValue) => {
-  // if(newValue === undefined || newValue === null) return // checkboxes would need to be able to be unchecked, thus newValue would be false
+  if(newValue === undefined || newValue === null) return // checkboxes would need to be able to be unchecked, thus newValue would be false
   emits('update:modelValue', newValue)
 }, { immediate: true, deep: true })
 
