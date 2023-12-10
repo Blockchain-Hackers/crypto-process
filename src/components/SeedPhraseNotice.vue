@@ -46,6 +46,7 @@
 import SeedPhraseGen from "@/components/SeedPhraseGen.vue";
 import { computed, onMounted, ref, watch } from "vue";
 import { useCookies } from "@vueuse/integrations/useCookies";
+import { useAuthStore } from "@/stores/auth";
 
 const props = defineProps<{
   modelValue?: boolean | undefined;
@@ -62,8 +63,10 @@ watch(modelRef, (value) => {
   seedPhraseDialog.value = value;
   emits("update:modelValue", value);
 });
-const onConfirm = ({ wallet }: { wallet: object }) => {
-  console.log(wallet);
+const onConfirm = ({ wallet, keyName }: { wallet: object, keyName: string }) => {
+  console.log(wallet, keyName);
+
+  // TODO: save wallet to db
   seedPhraseDialog.value = false;
   emits("update:modelValue", false);
 };
@@ -77,6 +80,7 @@ type CookieData = {
   hasBeenDismissed: boolean;
 };
 const cookies = useCookies(["seedPhraseNotice"]);
+const authStore = useAuthStore();
 const handleNoticeVisibility = async () => {
   emits("show-notice", false); // start with notice hidden
 
@@ -85,11 +89,10 @@ const handleNoticeVisibility = async () => {
   if (noticeCookie?.hasWallet) return;
 
   // make request to check if user has wallet
-  const hasWalletBackend = false;
-  if (hasWalletBackend) return;
+  if (authStore.hasPrivateKey) return;
 
   // if user doesn't have wallet, check if notice has been dismissed
-  if (!props.isDismissable && !hasWalletBackend) {
+  if (!props.isDismissable && !authStore.hasPrivateKey) {
     emits("show-notice", true);
     return;
   }
@@ -97,7 +100,7 @@ const handleNoticeVisibility = async () => {
   if (
     props.isDismissable &&
     !noticeCookie?.hasBeenDismissed &&
-    !hasWalletBackend
+    !authStore.hasPrivateKey
   ) {
     emits("show-notice", true);
     return;

@@ -20,6 +20,7 @@ export const useAuthStore = defineStore("auth", {
     getUser: (state) => state.user,
     getToken: (state) => state.token,
     getAccounts: (state) => state.user?.accounts || [],
+    hasPrivateKey: (state) => state.user?.hasSetPrivateKey || false,
     getAuthHeader: (state) => {
       return !!state.token ? {
         headers: {

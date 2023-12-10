@@ -24,7 +24,7 @@
     </div>
 
     <button
-      @click="confirm"
+      @click="nameKeyModal=true"
       class="tw-ring-1 tw-ring-white hover:tw-ring-4 tw-rounded-full
       tw-px-5 tw-py-1 tw-mt-10 tw-self-center tw-outline-none
       tw-transition-all tw-duration-300">
@@ -36,6 +36,33 @@
       tw-self-center tw-outline-none">
       back
     </button>
+
+    <v-dialog v-model="nameKeyModal" width="500" persistent class="">
+      <v-card class="!tw-rounded-lg">
+        <div class="tw-bg-white tw-p-6">
+          <h3>What do we call this key?</h3>
+          <form @submit.prevent="confirm" class="tw-flex tw-gap-3 tw-mt-4">
+            <label class="tw-relative tw-flex-1">
+              <input
+                v-model="keyName"
+                type="text"
+                name="apikeyName"
+                id="apikeyName"
+                placeholder="My Key"
+                required
+                class="tw-w-full tw-bg-gray-100 tw-p-3 tw-rounded-xl tw-outline-none
+                tw-ring tw-ring-primary/50 focus:tw-ring-primary/80"
+              />
+            </label>
+            <button
+              class="tw-bg-primary tw-text-white tw-py-2 tw-px-4 tw-rounded-xl
+              tw-font-medium hover:tw-ring-4 tw-ring-primary/30 transition-all tw-duration-300">
+              Save
+            </button>
+          </form>
+        </div>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -44,7 +71,7 @@ import { ethers } from 'ethers';
 import { computed, ref } from 'vue';
 
 const props = defineProps<{
-  onConfirm: ({wallet}:{wallet:object}) => void
+  onConfirm: ({wallet, keyName}:{wallet:object, keyName:string}) => void
   onBack: () => void
 }>()
 
@@ -56,6 +83,9 @@ const generateWallet = () => {
 generateWallet()
 
 const confirm = () => {
-  props.onConfirm({wallet: wallet.value})
+  props.onConfirm({wallet: wallet.value, keyName: keyName.value})
 }
+
+const nameKeyModal = ref(false)
+const keyName = ref('')
 </script>
