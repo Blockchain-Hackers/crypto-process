@@ -70,8 +70,15 @@
     </div>
 
 
-    <v-dialog
-      v-model="showCreationForm" width="500" persistent>
+    <v-dialog v-model="showCreationForm" width="500" persistent class="">
+      <button>
+        <v-icon
+          @click="showCreationForm = false"
+          class="tw-cursor-pointer tw-absolute -tw-top-4 tw-z-10
+          tw-rounded-full tw-bg-white !tw-h-10 !tw-w-10">
+          mdi-close
+        </v-icon>
+      </button>
       <v-card class="!tw-rounded-lg">
         <div class="tw-bg-white tw-p-3 sm:tw-p-6">
           <div>
