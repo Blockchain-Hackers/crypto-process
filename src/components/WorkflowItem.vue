@@ -112,6 +112,8 @@ import type {
   FunctionParameter,
 } from "@/types/workflow";
 import { useWorkflowStore } from "@/stores/workflow";
+import { useRoute, useRouter } from "vue-router";
+import { nextTick } from "process";
 
 const props = defineProps<{
   step: WorkflowTriggerData | WorkflowFunctionData | undefined;
@@ -175,9 +177,16 @@ const formToReturn = computed(() => {
 const onBack = () => {
   activeStepStage.value=fantomTabsForStepCreationStage[0]
 }
+const router = useRouter();
+const route = useRoute();
 const handleRemoveStep = () => {
-  confirm('Are you sure you want to remove this step?') &&
-  emits('remove-step', localId.value)
+  const res = confirm('Are you sure you want to remove this step?')
+  if(!res) return
+  // remove the query param for this step
+  const allQueries = {...route.query}
+  delete allQueries['step_stage_' + localId.value]
+  router.replace({query: allQueries})
+  setTimeout(()=>emits('remove-step', localId.value))
 }
 
 const handleFormSubmit = (formData: any) => {
