@@ -6,17 +6,28 @@
       <h3 class="tw-font-mono tw-text-lg tw-truncate">
         {{
           isTrigger ?
-            `${ step?.name && activeStepStage==='step_form' ? step?.name : 'Trigger'}` :
-            `${(step?.name && activeStepStage==='step_form') ? step?.name : 'Step'}`
+            `${ step?.name && (activeStepStage==='step_form' || activeStepStage==='created')
+              ? step?.name : 'Trigger'}` :
+            `${step?.name && (activeStepStage==='step_form' || activeStepStage==='created')
+              ? step?.name : 'Step'}`
         }}
       </h3>
 
-      <v-icon
-        v-if="activeStepStage==='created'"
-        @click="activeStepStage = fantomTabsForStepCreationStage[1]"
-        class="tw-cursor-pointer !tw-text-primary/50 hover:!tw-text-black">
-        mdi-layers-edit
-      </v-icon>
+      <div class="tw-space-x-3">
+        <v-icon
+          v-if="!isTrigger"
+          @click="handleRemoveStep"
+          class="tw-cursor-pointer !tw-text-primary/50 hover:!tw-text-black">
+          mdi-delete
+        </v-icon>
+
+        <v-icon
+          v-if="activeStepStage==='created'"
+          @click="activeStepStage = fantomTabsForStepCreationStage[1]"
+          class="tw-cursor-pointer !tw-text-primary/50 hover:!tw-text-black">
+          mdi-layers-edit
+        </v-icon>
+      </div>
     </div>
     <hr>
     <div class="tw-text-3xl tw-p-3">
@@ -103,7 +114,8 @@ const props = defineProps<{
   isLastStep: boolean
 }>()
 const emits = defineEmits<{
-  (e: 'add-step'): void
+  (e: 'add-step'): void,
+  (e: 'remove-step', localId: string): void,
 }>()
 
 const localId = ref(props?.step?.localId ?? new Date().toJSON())
@@ -145,6 +157,10 @@ const formToReturn = computed(()=>{
 })
 const onBack = () => {
   activeStepStage.value=fantomTabsForStepCreationStage[0]
+}
+const handleRemoveStep = () => {
+  confirm('Are you sure you want to remove this step?') &&
+  emits('remove-step', localId.value)
 }
 
 const handleFormSubmit = (formData: any) => {

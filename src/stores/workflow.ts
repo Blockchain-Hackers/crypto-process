@@ -134,6 +134,15 @@ export const useWorkflowStore = defineStore('workflow', {
       cookies.set('workflow', payload)
       this.workflows = payload
     },
+    removeStep({localId}: {localId:string}) {
+      const existingSteps = cookies.get<WorkflowCookieData>('workflow')?.steps
+      const newSteps = existingSteps?.filter((step) => step.localId !== localId)
+      cookies.set('workflow', {
+        trigger: cookies.get<WorkflowCookieData>('workflow')?.trigger,
+        steps: newSteps
+      })
+      this.workflows.steps = newSteps ?? []
+    },
     clearWorkflowCreation() {
       cookies.remove('workflow')
       this.workflows = {

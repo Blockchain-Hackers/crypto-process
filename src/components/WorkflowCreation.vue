@@ -30,15 +30,9 @@
           :isTrigger="false"
           :isLastStep="i+1 === steps.length"
           @add-step="addStep"
+          @remove-step="removeStep"
         />
 
-        <!-- {{
-          {
-            canCreateWorkflow,
-            isTriggerCompleted: workflowStore.isTriggerCompleted,
-            isAddedStepsCompleted: workflowStore.isAddedStepsCompleted
-          }
-        }} -->
         <button
           v-if="canCreateWorkflow"
           class="tw-w-full sm:tw-w-[600px] tw-bg-primary tw-text-white tw-py-4 tw-rounded-md
@@ -101,6 +95,7 @@ const workflowStore = useWorkflowStore()
 const trigger = computed(()=>workflowStore.workflows.trigger)
 const steps = computed(()=>workflowStore.workflows.steps)
 const addStep = () => workflowStore.createNextStep()
+const removeStep = (localId: string) => workflowStore.removeStep({localId})
 
 const canCreateWorkflow = computed(()=>(
   workflowStore.isAddedStepsCompleted &&
