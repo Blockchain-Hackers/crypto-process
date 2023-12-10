@@ -109,6 +109,28 @@
       </span>
     </template>
 
+    <template v-else-if="field.formElement === 'account'">
+      <select
+        v-model="value"
+        :placeholder="field?.hint ?? field.name"
+        :class="elementClass"
+        class="tw-w-full"
+        v-if="accounts.length > 0"
+      >
+        <option value="" disabled selected>Select {{ field.name }}</option>
+        <option
+          v-for="option in accounts"
+          :key="option.name"
+          :value="option._id"
+        >
+          {{ option.name }}
+        </option>
+      </select>
+      <div class="tw-text-red-400" v-else>
+        Please Add your mailgun account in account settings
+      </div>
+    </template>
+
     <template v-else-if="field.formType === 'radio'">
       <span :class="elementClass" class="tw-flex tw-gap-2 tw-items-center">
         <input
@@ -152,8 +174,11 @@
 import VueJsonPretty from "vue-json-pretty";
 import "vue-json-pretty/lib/styles.css";
 import type { TriggerParameter, FunctionParameter } from "@/types/workflow";
-import { ref, watch } from "vue";
+import { ref, watch, onMounted, reactive } from "vue";
 import { useWorkflowStore } from "@/stores/workflow";
+import axios from "axios";
+import router from "@/router";
+import { useAuthStore } from "@/stores/auth";
 const workflowStore = useWorkflowStore();
 // console.log(JSON.stringify(workflowStore, null, 2));
 
@@ -171,6 +196,7 @@ const elementClass =
   "tw-ring-1 tw-ring-gray-300 tw-px-2 tw-py-1 tw-rounded-md tw-outline-none";
 
 const value = ref(props.modelValue);
+let accounts = ref([] as { name: string; _id: string }[]);
 watch(
   value,
   (newValue) => {
@@ -188,4 +214,25 @@ const selectedChange = (selected: any) => {
   // type into the active input with {{ selected }}
   value.value += `{{ ${selected} }}`;
 };
+const authStore = useAuthStore();
+
+onMounted(() => {
+  const token = authStore.token;
+  // fetch accounts if input type is account
+  if (props.field.formElement === "account") {
+    // fetch accounts using axios
+    axios
+      .get(`/v1/accounts?type=${props.field.formAccountType}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        accounts.value = res.data.data;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+});
 </script>
