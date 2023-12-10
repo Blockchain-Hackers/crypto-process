@@ -2,9 +2,9 @@
   <div class="tw-max-w-2xl tw-text-lg tw-text-center tw-flex tw-flex-col tw-gap-4">
     <h2 class="tw-text-4xl tw-font-mono tw-font-thin tw-text-center">Secure your seedphrase</h2>
 
-    <!-- <p class="tw-opacity-40">
+    <p class="tw-opacity-40">
       A unique 12-word sequence generated for you when you create a wallet. You enter your seed phrase to open your wallet
-    </p> -->
+    </p>
     <p>
       Don't lose your seed phrase. If you lose your seed phrase, you lose access to your --something-- account and can <strong>never</strong> get them back.
     </p>
@@ -36,13 +36,6 @@
       tw-self-center tw-outline-none">
       back
     </button>
-
-    <button
-      @click="onBack"
-      class="tw-opacity-40 hover:tw-opacity-50 tw-px-5
-      tw-self-center tw-outline-none">
-      next
-    </button>
   </div>
 </template>
 
@@ -65,6 +58,4 @@ generateWallet()
 const confirm = () => {
   props.onConfirm({wallet: wallet.value})
 }
-
-
 </script>
