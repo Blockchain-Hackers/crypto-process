@@ -54,7 +54,7 @@
         class="tw-w-full">
         <option value="" disabled selected>Select {{ field.name }}</option>
         <option
-          v-for="option in field.options" :key="option.name">
+          v-for="option in field.options" :key="option.name" :value="option.value">
           {{ option.name }}
         </option>
       </select>
@@ -114,10 +114,6 @@ watch(value, (newValue) => {
   emits('update:modelValue', newValue)
 }, { immediate: true, deep: true })
 
-const addKeyValue = () => {
-  value.value.push({key:'',value:''})
-}
-const removeKeyValue = (index: number) => {
-  value.value.splice(index, 1)
-}
+const addKeyValue = () => value.value.push({key:'',value:''})
+const removeKeyValue = (index: number) => value.value.splice(index, 1)
 </script>

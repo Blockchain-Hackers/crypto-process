@@ -75,6 +75,31 @@ export const useWorkflowStore = defineStore('workflow', {
       })
       this.workflows.steps = existingSteps
     },
+    updateStep({localId, data, isTrigger}: {localId:string, data:any, isTrigger:boolean}) {
+      if(isTrigger) {
+        const existingTrigger = cookies.get<WorkflowCookieData>('workflow')?.trigger
+        if(!existingTrigger) return
+
+        const triggerPayload:WorkflowTriggerData = {
+          ...existingTrigger,
+          formData: data.formData
+        }
+        cookies.set('workflow', {
+          trigger: triggerPayload,
+          steps: cookies.get<WorkflowCookieData>('workflow')?.steps
+        })
+        return
+      }
+      const existingSteps = cookies.get<WorkflowCookieData>('workflow')?.steps
+      existingSteps?.map((step,i) => {
+        if (step.localId === localId)  existingSteps[i].formData = data.formData
+      })
+      cookies.set('workflow', {
+        trigger: cookies.get<WorkflowCookieData>('workflow')?.trigger,
+        steps: existingSteps
+      })
+      this.workflows.steps = existingSteps
+    },
     createNextStep() {
       const existingSteps = cookies.get<WorkflowCookieData>('workflow')?.steps ?? []
       const localId = new Date().toJSON()

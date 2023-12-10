@@ -36,8 +36,8 @@
 
         <div class="tw-mt-3">
           <ReturnsForm
-            :fields="formToReturn?.parameters!"
-            :on-submit="(data:any)=>{console.log(data);}"
+            :fields="formToReturn!"
+            :on-submit="(formData:any)=>workflowStore.updateStep({localId, data: formData, isTrigger: props.isTrigger})"
           />
         </div>
       </div>
@@ -76,7 +76,9 @@ import type {
   Trigger,
   Function,
   WorkflowTriggerData,
-  WorkflowFunctionData
+  WorkflowFunctionData,
+  TriggerParameter,
+  FunctionParameter,
 } from '@/types/workflow';
 import { useWorkflowStore } from '@/stores/workflow';
 
@@ -124,7 +126,9 @@ const handleStoreFunctionStep = (function_: Function) => {
 
 const formToReturn = computed(()=>{
   const stepInfo = props.isTrigger ? workflowStore.getTrigger : workflowStore.getStep(localId.value)
-  return workflowStore.getTriggerOrFunctionById({_id: stepInfo?._id ?? '', isTrigger: props.isTrigger})
+  // if formData is available, it means that the step has been created
+  return stepInfo?.formData as (TriggerParameter | FunctionParameter)[] | null ??
+    workflowStore.getTriggerOrFunctionById({_id: stepInfo?._id ?? '', isTrigger: props.isTrigger})?.parameters
 })
 const onBack = () => {
   activeStepStage.value=fantomTabsForStepCreationStage[0]
