@@ -90,9 +90,13 @@ export const useWorkflowStore = defineStore('workflow', {
         })
         return
       }
+
       const existingSteps = cookies.get<WorkflowCookieData>('workflow')?.steps
       existingSteps?.map((step,i) => {
-        if (step.localId === localId)  existingSteps[i].formData = data.formData
+        if (step.localId === localId) {
+          existingSteps[i].formData = data.formData
+          existingSteps[i].canAddNextStep = true
+        }
       })
       cookies.set('workflow', {
         trigger: cookies.get<WorkflowCookieData>('workflow')?.trigger,

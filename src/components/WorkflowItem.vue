@@ -54,7 +54,7 @@
         @click="emits('add-step')"
         :class="[
             { '!tw-flex': isLastStep && canAddStep },
-          { 'before:tw-absolute before:tw-bottom-full before:tw-w-px before:tw-bg-black/50 before:tw-h-[20px]': canAddStep },
+          { 'before:tw-absolute before:tw-bottom-full before:tw-w-px before:tw-bg-black/50 before:tw-h-[20px]': canAddStep || hasSteps },
           { 'after:tw-absolute after:tw-top-full after:tw-w-px after:tw-bg-black/50 after:tw-h-[20px]': !isLastStep },
         ]"
         class="tw-absolute tw-top-[20px] tw-bg-gray-200 hover:tw-bg-gray-300
@@ -92,7 +92,7 @@ const emits = defineEmits<{
 }>()
 
 const localId = ref(props?.step?.localId ?? new Date().toJSON())
-const canAddStep = ref(!!props?.step?.canAddNextStep || props.isTrigger) // if it's a trigger, it can always add a step
+const canAddStep = computed(()=>!!props?.step?.canAddNextStep || props.isTrigger) // if it's a trigger, it can always add a step
 const hasSteps = ref(!props.isLastStep)
 
 const activeStepStage = ref()
