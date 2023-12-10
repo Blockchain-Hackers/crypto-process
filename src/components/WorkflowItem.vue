@@ -2,13 +2,22 @@
   <div
     class="!tw-ring tw-ring-primary/60 !tw-rounded-lg sm:tw-w-[600px]
     tw-relative tw-bg-white">
-    <h3 class="tw-font-mono tw-text-lg tw-p-3">
-      {{
-        isTrigger ?
-          `${ step?.name && activeStepStage==='step_form' ? step?.name : 'Trigger'}` :
-          `${(step?.name && activeStepStage==='step_form') ? step?.name : 'Step'}`
-      }}
-    </h3>
+    <div class="tw-flex tw-justify-between tw-items-center tw-p-3">
+      <h3 class="tw-font-mono tw-text-lg tw-truncate">
+        {{
+          isTrigger ?
+            `${ step?.name && activeStepStage==='step_form' ? step?.name : 'Trigger'}` :
+            `${(step?.name && activeStepStage==='step_form') ? step?.name : 'Step'}`
+        }}
+      </h3>
+
+      <v-icon
+        v-if="activeStepStage==='created'"
+        @click="activeStepStage = fantomTabsForStepCreationStage[1]"
+        class="tw-cursor-pointer !tw-text-primary/50 hover:!tw-text-black">
+        mdi-layers-edit
+      </v-icon>
+    </div>
     <hr>
     <div class="tw-text-3xl tw-p-3">
       <!-- this is not rendered anywhere, just the state it generates is needed -->
@@ -37,8 +46,15 @@
         <div class="tw-mt-3">
           <ReturnsForm
             :fields="formToReturn!"
-            :on-submit="(formData:any)=>workflowStore.updateStep({localId, data: formData, isTrigger: props.isTrigger})"
+            :on-submit="handleFormSubmit"
           />
+        </div>
+      </div>
+
+      <div v-else-if="activeStepStage==='created'">
+        <div class="tw-text-xl tw-flex tw-flex-col tw-items-center tw-gap-2">
+          <v-icon class="tw-text-emerald-500">mdi-check</v-icon>
+          <span class="tw-text-xl tw-font-medium">Step ready</span>
         </div>
       </div>
     </div>
@@ -129,5 +145,10 @@ const formToReturn = computed(()=>{
 })
 const onBack = () => {
   activeStepStage.value=fantomTabsForStepCreationStage[0]
+}
+
+const handleFormSubmit = (formData: any) => {
+  workflowStore.updateStep({localId: localId.value, data: formData, isTrigger: props.isTrigger})
+  activeStepStage.value=fantomTabsForStepCreationStage[2]
 }
 </script>
