@@ -1,26 +1,27 @@
 <template>
   <div class="tw-block">
     <div
-      class="tw-bg-black-1 tw-text-white tw-flex sm:tw-items-center
-      tw-p-3 tw-rounded-lg tw-gap-2">
+      class="tw-bg-black-1 tw-text-white tw-flex sm:tw-items-center tw-p-3 tw-rounded-lg tw-gap-2"
+    >
       <div
-        class="tw-flex-grow tw-flex tw-justify-between sm:tw-items-center
-        tw-flex-col sm:tw-flex-row tw-items-start tw-gap-4">
+        class="tw-flex-grow tw-flex tw-justify-between sm:tw-items-center tw-flex-col sm:tw-flex-row tw-items-start tw-gap-4"
+      >
         <p class="tw-text-sm">
-          Hi, <em class="tw-not-italic tw-font-semibold">Sire</em> a lot of what you'll be doing here requires a private key.
-          Lets help you get one.
+          Hi, <em class="tw-not-italic tw-font-semibold">Sire</em> a lot of what
+          you'll be doing here requires a private key. Lets help you get one.
         </p>
         <button
-          @click="seedPhraseDialog=true"
-          class="tw-ring-2 tw-ring-white hover:tw-ring-4
-          tw-bg-primary tw-text-sm tw-p-1.5 tw-px-3 tw-rounded-md tw-transition-all tw-duration-300">
+          @click="seedPhraseDialog = true"
+          class="tw-ring-2 tw-ring-white hover:tw-ring-4 tw-bg-primary tw-text-sm tw-p-1.5 tw-px-3 tw-rounded-md tw-transition-all tw-duration-300"
+        >
           get me a private key
         </button>
       </div>
       <v-icon
         v-if="isDismissable"
         @click="handleNoticeDismiss"
-        class="tw-cursor-pointer">
+        class="tw-cursor-pointer"
+      >
         mdi-close
       </v-icon>
     </div>
@@ -29,8 +30,10 @@
       v-model="seedPhraseDialog"
       fullscreen
       :scrim="false"
-      transition="dialog-bottom-transition">
+      transition="dialog-bottom-transition"
+    >
       <v-card class="!tw-bg-primary">
+        <component :is="currentPage" />
         <SeedPhraseGen
           class="tw-mx-auto tw-text-white tw-py-10 px-6 sm:px-10"
           :onConfirm="onConfirm"
@@ -42,60 +45,65 @@
 </template>
 
 <script setup lang="ts">
-import SeedPhraseGen from '@/components/SeedPhraseGen.vue';
-import { onMounted, ref } from 'vue';
-import { useCookies } from '@vueuse/integrations/useCookies'
+import SeedPhraseGen from "@/components/SeedPhraseGen.vue";
+import ConfirmSeedPhrase from "@/components/ConfirmSeedPhrase.vue";
+import { onMounted, ref } from "vue";
+import { useCookies } from "@vueuse/integrations/useCookies";
 
 const props = defineProps<{
-  isDismissable?: boolean
-}>()
+  isDismissable?: boolean;
+}>();
 const emits = defineEmits<{
-  (e: 'show-notice', show: boolean): void
-}>()
+  (e: "show-notice", show: boolean): void;
+}>();
 
-const seedPhraseDialog = ref(false)
-const onConfirm = ({wallet}:{wallet:object}) => {
-  console.log(wallet)
-  seedPhraseDialog.value = false
-}
+const seedPhraseDialog = ref(false);
+const onConfirm = ({ wallet }: { wallet: object }) => {
+  console.log(wallet);
+  seedPhraseDialog.value = false;
+};
 const onBack = () => {
-  seedPhraseDialog.value = false
-}
+  seedPhraseDialog.value = false;
+};
 
 type CookieData = {
-  hasWallet: boolean
-  hasBeenDismissed: boolean
-}
-const cookies = useCookies(['seedPhraseNotice'])
+  hasWallet: boolean;
+  hasBeenDismissed: boolean;
+};
+const cookies = useCookies(["seedPhraseNotice"]);
 const handleNoticeVisibility = async () => {
-  emits("show-notice", false) // start with notice hidden
+  emits("show-notice", false); // start with notice hidden
 
-  const noticeCookie = cookies.get<CookieData>('seedPhraseNotice')
+  const noticeCookie = cookies.get<CookieData>("seedPhraseNotice");
   // first check cookie to know if we locally know if user has wallet
-  if(noticeCookie?.hasWallet) return
+  if (noticeCookie?.hasWallet) return;
 
   // make request to check if user has wallet
-  const hasWalletBackend = false
-  if(hasWalletBackend) return
+  const hasWalletBackend = false;
+  if (hasWalletBackend) return;
 
   // if user doesn't have wallet, check if notice has been dismissed
-  if(!props.isDismissable && !hasWalletBackend) {
-    emits("show-notice", true)
-    return
+  if (!props.isDismissable && !hasWalletBackend) {
+    emits("show-notice", true);
+    return;
   }
 
-  if(props.isDismissable && !noticeCookie?.hasBeenDismissed && !hasWalletBackend) {
-    emits("show-notice", true)
-    return
+  if (
+    props.isDismissable &&
+    !noticeCookie?.hasBeenDismissed &&
+    !hasWalletBackend
+  ) {
+    emits("show-notice", true);
+    return;
   }
-}
-onMounted(handleNoticeVisibility)
+};
+onMounted(handleNoticeVisibility);
 
 const handleNoticeDismiss = () => {
-  emits("show-notice", false)
-  cookies.set('seedPhraseNotice', {
+  emits("show-notice", false);
+  cookies.set("seedPhraseNotice", {
     hasWallet: false,
-    hasBeenDismissed: true
-  })
-}
+    hasBeenDismissed: true,
+  });
+};
 </script>

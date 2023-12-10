@@ -20,6 +20,7 @@ const router = createRouter({
         layout: LayoutTypes.Empty,
       },
     },
+
     {
       path: "/login",
       name: "login",
