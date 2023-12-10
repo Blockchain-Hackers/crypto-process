@@ -39,7 +39,7 @@ const showNotice = ref(true);
 const showDialog = ref(false);
 const showWorkflowCreation = ref(false);
 
-const accountsType = ref(["mailgun", "private key"]);
+const accountsType = ref(["mailgun"]);
 const selectedAccount = ref("mailgun");
 
 const navigateToMail = () => {
