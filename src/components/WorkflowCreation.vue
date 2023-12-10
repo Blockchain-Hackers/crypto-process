@@ -17,7 +17,7 @@
 
       <v-card
         class="!tw-bg-gray-50 !tw-pt-10 !tw-px-4
-        !tw-flex !tw-flex-col sm:!tw-items-center !tw-gap-[72px] !tw-pb-16">
+        !tw-flex !tw-flex-col sm:!tw-items-center !tw-gap-[72px]">
         <WorkflowItem
           :step="trigger!"
           :isTrigger="true"
@@ -31,6 +31,29 @@
           :isLastStep="i+1 === steps.length"
           @add-step="addStep"
         />
+
+        <!-- {{
+          {
+            canCreateWorkflow,
+            isTriggerCompleted: workflowStore.isTriggerCompleted,
+            isAddedStepsCompleted: workflowStore.isAddedStepsCompleted
+          }
+        }} -->
+        <button
+          v-if="canCreateWorkflow"
+          class="tw-w-full sm:tw-w-[600px] tw-bg-primary tw-text-white tw-py-4 tw-rounded-md
+          tw-font-medium hover:tw-ring-4 tw-ring-primary/30 transition-all tw-duration-300"
+          :disabled="creatingWorkflow">
+          <template v-if="!creatingWorkflow">Create! </template>
+          <v-progress-circular
+            v-else
+            indeterminate
+            color="white"
+            size="20"
+            width="2"
+          >
+          </v-progress-circular>
+        </button>
       </v-card>
     </v-dialog>
   </div>
@@ -78,4 +101,11 @@ const workflowStore = useWorkflowStore()
 const trigger = computed(()=>workflowStore.workflows.trigger)
 const steps = computed(()=>workflowStore.workflows.steps)
 const addStep = () => workflowStore.createNextStep()
+
+const canCreateWorkflow = computed(()=>(
+  workflowStore.isAddedStepsCompleted &&
+  workflowStore.isTriggerCompleted &&
+  workflowStore.hasSteps
+))
+const creatingWorkflow = computed(()=>workflowStore.creatingWorkflow)
 </script>

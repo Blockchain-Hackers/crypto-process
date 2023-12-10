@@ -40,6 +40,7 @@ onMounted(() => {
   // if query is found then user probably refreshed the page
   const workflowQuery = route?.query || {}
   Object.entries(workflowQuery).forEach(([key]) => {
+    // TODO: properly wait for network to fetch triggers and functions before showing workflow creation
     if(key.includes('step')) setTimeout(()=>showWorkflowCreation.value = true, 1000)
   })
 })

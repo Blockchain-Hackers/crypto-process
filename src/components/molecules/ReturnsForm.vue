@@ -12,7 +12,12 @@
       class="tw-flex tw-gap-3 tw-text-base tw-mt-3 [&>*]:tw-flex-grow
       [&>*]:tw-px-2 [&>*]:tw-py-1 [&>*]:tw-rounded-md">
       <button type="button" class="">cancel</button>
-      <button class="tw-bg-primary tw-text-white">save and continue</button>
+      <button
+        class="tw-bg-primary tw-text-white disabled:tw-bg-primary/40
+        disabled:tw-text-black disabled:tw-cursor-not-allowed"
+        :disabled="!formIsFilled">
+        save and continue
+      </button>
     </div>
   </form>
 </template>
@@ -20,7 +25,7 @@
 <script setup lang="ts">
 import ReturnsFormField from '@/components/atoms/ReturnsFormField.vue';
 import type { TriggerParameter, FunctionParameter } from '@/types/workflow'
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 const props = defineProps<{
   fields: (TriggerParameter | FunctionParameter)[]
@@ -39,4 +44,16 @@ const fieldsWithValueRef = ref(props.fields.map((field) => {
       field?.valueRef ?? ''
   }
 }))
+
+const check = (field:string|number|boolean)=>{
+  return field !== '' && field !== undefined && field !== null
+}
+const formIsFilled = computed(() => {
+  return fieldsWithValueRef.value.every((field) => {
+    if(field.formElement === 'object') {
+      return field.valueRef.every((obj:{key:string,value:any}) => check(obj.key) && check(obj.value))
+    }
+    return check(field.valueRef)
+  })
+})
 </script>

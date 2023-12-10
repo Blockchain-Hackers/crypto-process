@@ -18,6 +18,7 @@
               placeholder="key"
               :class="elementClass"
               class="tw-w-full"
+              required
             />
             <input
               v-model="each.value"
@@ -25,6 +26,7 @@
               placeholder="value"
               :class="elementClass"
               class="tw-w-full"
+              required
             />
           </div>
           <span
@@ -43,6 +45,7 @@
         :placeholder="field?.hint ?? field.name"
         :class="elementClass"
         class="tw-w-full tw-max-h-40 tw-min-h-[60px]"
+        required
       ></textarea>
     </template>
 
@@ -51,7 +54,8 @@
         v-model="value"
         :placeholder="field?.hint ?? field.name"
         :class="elementClass"
-        class="tw-w-full">
+        class="tw-w-full"
+        required>
         <option value="" disabled selected>Select {{ field.name }}</option>
         <option
           v-for="option in field.options" :key="option.name" :value="option.value">
@@ -66,6 +70,7 @@
           v-model="value"
           :type="field.formType"
           :placeholder="field?.hint ?? field.name"
+          required
         />
         {{ field.name }}
       </span>
@@ -77,6 +82,7 @@
           v-model="value"
           :type="field.formType"
           :placeholder="field?.hint ?? field.name"
+          required
         />
         {{ field.name }}
       </span>
@@ -89,6 +95,7 @@
         :placeholder="field?.hint ?? field.name"
         :class="elementClass"
         class="tw-w-full"
+        required
       />
     </template>
   </label>
@@ -110,7 +117,7 @@ const elementClass = 'tw-ring-1 tw-ring-gray-300 tw-px-2 tw-py-1 tw-rounded-md t
 
 const value = ref(props.modelValue)
 watch(value, (newValue) => {
-  if(!newValue && props.field.formType !== 'checkbox') return // checkboxes would need to be able to be unchecked, thus newValue would be false
+  // if(newValue === undefined || newValue === null) return // checkboxes would need to be able to be unchecked, thus newValue would be false
   emits('update:modelValue', newValue)
 }, { immediate: true, deep: true })
 

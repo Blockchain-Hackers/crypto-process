@@ -17,6 +17,7 @@ export const useWorkflowStore = defineStore('workflow', {
       trigger: null,
       steps: []
     },
+    creatingWorkflow: false
   }),
   getters: {
     getTrigger: () => {
@@ -26,11 +27,20 @@ export const useWorkflowStore = defineStore('workflow', {
       const steps = cookies.get<WorkflowCookieData>('workflow')?.steps
       return steps.find((step) => step.localId === localId) ?? null
     },
+    hasSteps: (state) => state.workflows.steps.length > 0,
     getTriggerOrFunctionById: () => ({_id, isTrigger}: {_id:string, isTrigger:boolean}) => {
       if (isTrigger) {
         return useTriggerStore().triggers.find((trigger) => trigger._id === _id)
       }
       return useFunctionsStore().functions.find((function_) => function_._id === _id)
+    },
+    isAddedStepsCompleted: (state) => {
+      if(!state.workflows.steps) return false
+      return state.workflows.steps.every((step) => step.canAddNextStep)
+    },
+    isTriggerCompleted: (state) => {
+      if(!state.workflows.trigger) return false
+      return state.workflows.trigger.formData !== null
     },
   },
   actions: {
@@ -88,6 +98,7 @@ export const useWorkflowStore = defineStore('workflow', {
           trigger: triggerPayload,
           steps: cookies.get<WorkflowCookieData>('workflow')?.steps
         })
+        this.workflows.trigger = triggerPayload
         return
       }
 
