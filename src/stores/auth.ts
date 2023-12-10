@@ -76,6 +76,16 @@ export const useAuthStore = defineStore("auth", {
           reject(error)
         }
       })
-    }
+    },
+    createMailgunAccount(payload: {domain: string; apiKey: string; username: string;}) {
+      return new Promise(async (resolve, reject) => {
+        try {
+          await axios.post('/v1/accounts/mailgun', payload)
+          resolve(true);
+        } catch (error) {
+          reject(error)
+        }
+      })
+    },
   },
 });

@@ -69,10 +69,72 @@
       </div>
     </div>
 
+
     <v-dialog
       v-model="showCreationForm" width="500" persistent>
-      <v-card>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt suscipit unde tempore culpa molestias, quisquam corrupti ex tempora consequatur totam accusantium. Maiores eveniet cumque laudantium, facere rem repudiandae reprehenderit exercitationem sint magni animi quos ipsam a quas itaque. Repudiandae dolor minus rerum ipsum sed incidunt. Laudantium culpa exercitationem aspernatur!
+      <v-card class="!tw-rounded-lg">
+        <div class="tw-bg-white tw-p-3 sm:tw-p-6">
+          <div>
+            <h2 class="tw-text-xl tw-font-bold">Create a mailgun account with us</h2>
+            <form @submit.prevent="createMailgunAccount" class="tw-mt-4 tw-text-base">
+              <label class="tw-relative tw-block">
+                <span class="tw-absolute tw-text-base tw-pl-3 tw-pt-1">
+                  Enter your domain name
+                </span>
+                <input
+                  v-model="mailgunForm.domainname"
+                  type=""
+                  name="domainname"
+                  placeholder="www.example.com"
+                  :required="true"
+                  class="tw-w-full tw-bg-gray-100 tw-p-3 tw-pt-7 tw-rounded-md tw-outline-black"
+                />
+              </label>
+
+              <label class="tw-relative tw-block tw-mt-4">
+                <span class="tw-absolute tw-text-base tw-pl-3 tw-pt-1">
+                  Enter your api key
+                </span>
+                <input
+                  v-model="mailgunForm.apikey"
+                  type=""
+                  name="apikey"
+                  placeholder="XXXXXXXXXXXXXXX"
+                  :required="true"
+                  class="tw-w-full tw-bg-gray-100 tw-p-3 tw-pt-7 tw-rounded-md tw-outline-black"
+                />
+              </label>
+
+              <label class="tw-relative tw-block tw-mt-4">
+                <span class="tw-absolute tw-text-base tw-pl-3 tw-pt-1">
+                  Enter a username
+                </span>
+                <input
+                  v-model="mailgunForm.username"
+                  type=""
+                  name="username"
+                  placeholder="user1"
+                  :required="true"
+                  class="tw-w-full tw-bg-gray-100 tw-p-3 tw-pt-7 tw-rounded-md tw-outline-black"
+                />
+              </label>
+
+              <button
+                class="tw-w-full tw-bg-primary tw-text-white tw-py-4 tw-mt-10 tw-rounded-md
+                tw-font-medium hover:tw-ring-4 tw-ring-primary/30 transition-all tw-duration-300"
+                :disabled="creatingAccount">
+                <template v-if="!creatingAccount">Create</template>
+                <v-progress-circular
+                  v-else
+                  indeterminate
+                  color="white"
+                  size="20"
+                  width="2">
+                </v-progress-circular>
+              </button>
+            </form>
+          </div>
+        </div>
       </v-card>
     </v-dialog>
   </div>
@@ -80,26 +142,15 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
 import SeedPhraseNotice from "@/components/SeedPhraseNotice.vue";
 import { useAuthStore } from "@/stores/auth";
 import type { Account } from "@/types/auth";
+import { toast } from "vue3-toastify";
 
-const route = useRoute();
-const router = useRouter();
 const authStore = useAuthStore();
 
 const showNotice = ref(true);
 const noticeModel = ref<boolean>();
-
-// const navigateToMail = () => {
-//   switch (selectedAccount.value) {
-//     case "mailgun":
-//       router.push("/mailgun");
-//       break;
-//   }
-// };
-
 const selectedAccountType = ref();
 const accountTypes = [
   { title: 'Mailgun', slug: 'mailgun' },
@@ -117,4 +168,45 @@ const handleSelectAccountType = (slug: string) => {
   showCreationForm.value = true
 }
 const showCreationForm = ref(false)
+
+const mailgunForm = ref({
+  domainname: "",
+  apikey: "",
+  username: "",
+});
+const creatingAccount = ref(false);
+const createMailgunAccount = async () => {
+  creatingAccount.value = true;
+  const id = toast.loading("creating your mailgun account...", {
+    position: toast.POSITION.TOP_RIGHT,
+  });
+
+  authStore.createMailgunAccount({
+    domain: mailgunForm.value.domainname,
+    apiKey: mailgunForm.value.apikey,
+    username: mailgunForm.value.username,
+  }).then((res) => {
+    toast.update(id, {
+      render: "mailgun account created",
+      type: "success",
+      isLoading: false,
+    });
+    showCreationForm.value = false;
+    // clear form
+    mailgunForm.value = {
+      domainname: "",
+      apikey: "",
+      username: "",
+    };
+  }).catch((err) => {
+    toast.update(id, {
+      render: "mailgun account creation failed",
+      type: "error",
+      isLoading: false,
+    });
+    console.log(err);
+  }).finally(() => {
+    creatingAccount.value = false;
+  });
+};
 </script>
