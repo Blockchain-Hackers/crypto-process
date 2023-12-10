@@ -91,7 +91,7 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
-
+import axios from "axios";
 // useHead({
 //   title: 'Process - Login',
 // })
@@ -113,6 +113,21 @@ const isLoading = ref(false);
 const authStore = useAuthStore();
 const handleMailGun = async () => {
   isLoading.value = true;
+
+  axios
+    .post("/v1/auth/mailgun", form.value)
+    .then((res) => {
+      authStore.login(res.data.data.access_token);
+      snackbar.value.show = true;
+      snackbar.value.text = res.data.message;
+      isLoading.value = false;
+      router.push("/");
+    })
+    .catch((err) => {
+      isLoading.value = false;
+      snackbar.value.show = true;
+      snackbar.value.text = err.message;
+    });
 
   setTimeout(() => {
     isLoading.value = false;

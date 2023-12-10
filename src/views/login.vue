@@ -120,9 +120,7 @@ const handleLogin = () => {
       snackbar.value.show = true;
       snackbar.value.text = res.data.message;
       logingIn.value = false;
-      setTimeout(() => {
-        router.push("/");
-      }, 2000);
+      router.push("/");
     })
     .catch((err) => {
       logingIn.value = false;
