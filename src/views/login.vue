@@ -91,10 +91,6 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
-import axios from "axios";
-// useHead({
-//   title: 'Process - Login',
-// })
 
 const form = ref({
   email: "",
@@ -110,22 +106,20 @@ const snackbar = ref({
 const router = useRouter();
 const logingIn = ref(false);
 const authStore = useAuthStore();
-const handleLogin = () => {
+const handleLogin = async () => {
   logingIn.value = true;
-
-  axios
-    .post("/v1/auth/login", form.value)
-    .then((res) => {
-      authStore.login(res.data.data.access_token);
+  await authStore.login(form.value)
+    .then(() => {
       snackbar.value.show = true;
-      snackbar.value.text = res.data.message;
-      logingIn.value = false;
+      snackbar.value.text = 'Login successful'
       router.push("/");
     })
     .catch((err) => {
-      logingIn.value = false;
       snackbar.value.show = true;
       snackbar.value.text = err.message;
-    });
+    })
+    .finally(() => {
+      logingIn.value = false;
+    })
 };
 </script>
