@@ -16,16 +16,35 @@ export const useAuthStore = defineStore("auth", {
     getToken: (state) => state.token,
   },
   actions: {
+    register(
+      payload: {
+        email: string;
+        password: string;
+        firstname: string;
+        lastname: string;
+      }
+    ) {
+      return new Promise(async (resolve, reject) => {
+        try {
+          await axios.post('/v1/auth/register', payload)
+          resolve(true);
+        } catch (error) {
+          reject(error)
+        }
+      })
+    },
     login(payload: { email: string; password: string }) {
       return new Promise(async (resolve, reject) => {
         try {
           const {data} = await axios.post('/v1/auth/login', payload) as {
             data: {
-              access_token: string;
-              user: User;
+              data: {
+                access_token: string;
+                user: User;
+              }
             }
           }
-          const {access_token, user} = data;
+          const {access_token, user} = data?.data;
           cookies.set("isLoggedIn", true);
           cookies.set("user", user);
           cookies.set("token", access_token);

@@ -120,11 +120,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import axios from "axios";
-
-// useHead({
-//   title: 'Process - Login',
-// })
+import { useAuthStore } from "@/stores/auth";
 
 const form = ref({
   email: "",
@@ -140,27 +136,22 @@ const snackbar = ref({
 });
 
 const router = useRouter();
+const authStore = useAuthStore();
 const registering = ref(false);
-const handleRegister = () => {
+const handleRegister = async () => {
   registering.value = true;
-
-  // call axios to register the user
-  axios
-    .post("/v1/auth/register", form.value)
-    .then((res) => {
-      registering.value = false;
-      snackbar.value = {
-        show: true,
-        text: res.data.message,
-      };
+  await authStore.register(form.value)
+    .then(() => {
+      snackbar.value.show = true;
+      snackbar.value.text = 'Registration successful please proceed to login';
       router.push("/login");
     })
     .catch((err) => {
+      snackbar.value.show = true;
+      snackbar.value.text = err.message;
+    })
+    .finally(() => {
       registering.value = false;
-      snackbar.value = {
-        show: true,
-        text: err.response.data.message,
-      };
-    });
+    })
 };
 </script>
