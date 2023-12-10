@@ -9,7 +9,7 @@
     </div>
 
     <div
-      class="tw-bg-gradient-to-r tw-from-primary/10 tw-to-transparent
+      class="tw-bg-gradient-to-r tw-from-orange-500/10 tw-to-transparent
       tw-p-5 tw-space-y-4">
       <h1 class="tw-text-3xl">Automate your tasks by <strong>creating a workflow</strong></h1>
       <button
