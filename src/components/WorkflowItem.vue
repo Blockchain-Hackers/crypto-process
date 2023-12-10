@@ -87,14 +87,7 @@
         @click="emits('add-step')"
         :class="[
           { '!tw-flex': isLastStep && canAddStep },
-          {
-            'before:tw-absolute before:tw-bottom-full before:tw-w-px before:tw-bg-black/50 before:tw-h-[20px]':
-              canAddStep || hasSteps,
-          },
-          {
-            'after:tw-absolute after:tw-top-full after:tw-w-px after:tw-bg-black/50 after:tw-h-[20px]':
-              !isLastStep,
-          },
+          { 'before:tw-absolute before:tw-bottom-full before:tw-w-px before:tw-bg-orange-500 before:tw-h-[20px]': canAddStep || hasSteps },
         ]"
         class="tw-absolute tw-top-[20px] tw-bg-gray-200 hover:tw-bg-gray-300 tw-rounded-lg tw-transition-colors tw-duration-300 tw-p-1 tw-hidden tw-justify-center"
       >
