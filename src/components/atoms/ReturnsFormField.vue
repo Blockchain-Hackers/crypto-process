@@ -150,7 +150,7 @@
     <template v-else>
       <input
         v-model="value"
-        :type="field.formType"
+        type="text"
         :placeholder="field?.hint ?? field.name"
         :class="elementClass"
         class="tw-w-full"
