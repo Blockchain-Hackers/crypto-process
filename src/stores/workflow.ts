@@ -98,7 +98,7 @@ export const useWorkflowStore = defineStore("workflow", {
         trigger: cookies.get<WorkflowCookieData>("workflow")?.trigger,
         steps: existingSteps,
       });
-      this.workflows.steps = existingSteps
+      this.workflows.steps = existingSteps;
     },
     updateStep({
       localId,
@@ -168,6 +168,36 @@ export const useWorkflowStore = defineStore("workflow", {
         trigger: null,
         steps: [],
       };
+    },
+    toJSON() {
+      // get all triggers, their params and outputs also function params and outputs, reduce parameters to object from array
+      const workflow = cookies.get<WorkflowCookieData>("workflow");
+      const trigger = workflow?.trigger;
+      const steps = workflow?.steps;
+      const object = {
+        trigger: {
+          _id: trigger?._id,
+          name: trigger?.name,
+          outputs: trigger?.outputs?.reduce(
+            (acc: Record<string, any>, output) => {
+              acc[output.name] = output.type;
+              return acc;
+            },
+            {}
+          ),
+          formData: trigger?.formData,
+        },
+        steps: steps?.map((step) => ({
+          _id: step._id,
+          name: step.name,
+          formData: step.formData,
+          outputs: step.outputs?.reduce((acc: Record<string, any>, output) => {
+            acc[output.name] = output.type;
+            return acc;
+          }, {}),
+        })),
+      };
+      return JSON.parse(JSON.stringify(object));
     },
   },
 });
