@@ -90,7 +90,7 @@
                 </span>
                 <input
                   v-model="mailgunForm.domainname"
-                  type=""
+                  type="url"
                   name="domainname"
                   placeholder="www.example.com"
                   :required="true"
@@ -104,7 +104,7 @@
                 </span>
                 <input
                   v-model="mailgunForm.apikey"
-                  type=""
+                  type="text"
                   name="apikey"
                   placeholder="XXXXXXXXXXXXXXX"
                   :required="true"
@@ -118,7 +118,7 @@
                 </span>
                 <input
                   v-model="mailgunForm.username"
-                  type=""
+                  type="text"
                   name="username"
                   placeholder="user1"
                   :required="true"
@@ -214,6 +214,7 @@ const createMailgunAccount = async () => {
     console.log(err);
   }).finally(() => {
     creatingAccount.value = false;
+    setTimeout(() => toast.remove(id), 1000);
   });
 };
 </script>

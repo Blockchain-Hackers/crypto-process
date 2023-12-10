@@ -4,6 +4,11 @@ import { useCookies } from "@vueuse/integrations/useCookies";
 import { useWorkflowStore } from './workflow';
 import axios from 'axios';
 
+type AuthHeader = {
+  headers: {
+    Authorization: string;
+  }
+}
 const cookies = useCookies(["user"]);
 export const useAuthStore = defineStore("auth", {
   state: () => ({
@@ -15,6 +20,13 @@ export const useAuthStore = defineStore("auth", {
     getUser: (state) => state.user,
     getToken: (state) => state.token,
     getAccounts: (state) => state.user?.accounts || [],
+    getAuthHeader: (state) => {
+      return !!state.token ? {
+        headers: {
+          Authorization: `Bearer ${state.token}`
+        }
+      } : {} as AuthHeader | {}
+    }
   },
   actions: {
     register(
@@ -70,7 +82,7 @@ export const useAuthStore = defineStore("auth", {
     deleteAccount({accountId}: {accountId: string}) {
       return new Promise(async (resolve, reject) => {
         try {
-          await axios.delete(`/v1/accounts/${accountId}`)
+          await axios.delete(`/v1/accounts/${accountId}`, this.getAuthHeader)
           resolve(true);
         } catch (error) {
           reject(error)
@@ -78,9 +90,13 @@ export const useAuthStore = defineStore("auth", {
       })
     },
     createMailgunAccount(payload: {domain: string; apiKey: string; username: string;}) {
-      return new Promise(async (resolve, reject) => {
+      return new Promise(async (resolve, reject) => {``
         try {
-          await axios.post('/v1/accounts/mailgun', payload)
+          const res = await axios.post('/v1/accounts/mailgun', payload, this.getAuthHeader)
+          console.log({
+            res
+          })
+          // TODO: add account to user
           resolve(true);
         } catch (error) {
           reject(error)
