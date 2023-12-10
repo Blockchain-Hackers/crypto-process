@@ -90,8 +90,8 @@ import { useAuthStore } from "@/stores/auth";
 import { toast } from "vue3-toastify";
 
 const form = ref({
-  email: "",
-  password: "",
+  email: "alysa_osinski@yahoo.com",
+  password: "PassCode@1123",
 });
 const showPassword = ref(false);
 
