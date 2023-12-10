@@ -42,6 +42,7 @@ import WorkflowItem from '@/components/WorkflowItem.vue';
 import { useTriggerStore } from '@/stores/triggers';
 import { useFunctionsStore } from '@/stores/functions';
 import { useWorkflowStore } from '@/stores/workflow';
+import { useRouter } from 'vue-router';
 
 const props = defineProps<{
   modelValue?: boolean
@@ -63,9 +64,14 @@ watch(modelValueRef, value => {
   dialog.value = value
   emits('update:modelValue', value)
 })
+const router = useRouter()
 const closeDialog = () => {
+  const res = confirm('Are you sure you want to close this dialog? Any unsaved changes will be lost.')
+  if(!res) return
   dialog.value = false
   emits('update:modelValue', false)
+  router.replace({query: {}})
+  workflowStore.clearWorkflowCreation()
 }
 
 const workflowStore = useWorkflowStore()

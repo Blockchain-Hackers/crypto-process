@@ -27,7 +27,7 @@
 <script setup lang="ts">
 import SeedPhraseNotice from '@/components/SeedPhraseNotice.vue';
 import WorkflowCreation from '@/components/WorkflowCreation.vue';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute()
@@ -35,4 +35,12 @@ const router = useRouter()
 
 const showNotice = ref(true)
 const showWorkflowCreation = ref(false)
+
+onMounted(() => {
+  // if query is found then user probably refreshed the page
+  const workflowQuery = route?.query || {}
+  Object.entries(workflowQuery).forEach(([key]) => {
+    if(key.includes('step')) setTimeout(()=>showWorkflowCreation.value = true, 1000)
+  })
+})
 </script>

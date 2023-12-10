@@ -113,13 +113,11 @@ const fantomTabsForStepCreationStage = [
 
 const workflowStore = useWorkflowStore()
 const handleStoreTriggerStep = (trigger: Trigger) => {
-  console.log({trigger})
   workflowStore.setSelectedTriggerStep({trigger, localId: localId.value})
   activeStepStage.value = fantomTabsForStepCreationStage[1]
 }
 
 const handleStoreFunctionStep = (function_: Function) => {
-  console.log({function_})
   workflowStore.setSelectedFunctionStep({function_, localId: localId.value})
   activeStepStage.value = fantomTabsForStepCreationStage[1]
 }
