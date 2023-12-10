@@ -22,6 +22,7 @@ export type Function = {
   outputs: { name: string; type: string }[];
   code: string;
   slug: string;
+  type: string;
   image_url: string;
   created_at: string;
   updated_at: string;
@@ -47,6 +48,7 @@ export type Trigger = {
   _id: string;
   name: string;
   slug: string;
+  type: string;
   parameters: TriggerParameter[];
   created_at: string;
   updated_at: string;
@@ -59,6 +61,8 @@ export type StepData<T> = {
   localId: string;
   name: string | undefined;
   canAddNextStep: boolean;
+  slug: string;
+  type: string;
   formData: T | null;
   outputs?: { name: string; type: string }[];
 };

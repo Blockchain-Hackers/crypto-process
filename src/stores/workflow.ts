@@ -1,15 +1,18 @@
 import type {
   Function,
+  FunctionParameter,
   Trigger,
   WorkflowCookieData,
   WorkflowFunctionData,
   WorkflowTriggerData,
 } from "@/types/workflow";
-
 import { defineStore } from "pinia";
 import { useCookies } from "@vueuse/integrations/useCookies";
 import { useFunctionsStore } from "./functions";
 import { useTriggerStore } from "./triggers";
+import { generateSlug } from "random-word-slugs";
+import { useAuthStore } from "./auth";
+import axios from "axios";
 
 const cookies = useCookies(["workflow"]);
 export const useWorkflowStore = defineStore("workflow", {
@@ -59,6 +62,8 @@ export const useWorkflowStore = defineStore("workflow", {
         outputs: trigger.outputs,
         canAddNextStep: true,
         formData: null,
+        slug: trigger.slug,
+        type: trigger.type,
       };
 
       cookies.set("workflow", {
@@ -83,6 +88,8 @@ export const useWorkflowStore = defineStore("workflow", {
         canAddNextStep: false,
         formData: null,
         outputs: function_.outputs,
+        slug: function_.slug,
+        type: function_.type,
       };
 
       let stepExists = false;
@@ -156,6 +163,8 @@ export const useWorkflowStore = defineStore("workflow", {
             canAddNextStep: false,
             formData: null,
             outputs: [],
+            slug: "",
+            type: "",
           },
         ],
       };
@@ -206,5 +215,55 @@ export const useWorkflowStore = defineStore("workflow", {
       };
       return JSON.parse(JSON.stringify(object));
     },
+    createWorkflow():Promise<boolean> {
+      this.creatingWorkflow = true
+      const authstore = useAuthStore();
+
+      return new Promise(async (resolve, reject) => {
+        try {
+          this.creatingWorkflow = true
+          const trigger = this.workflows.trigger
+          const triggerPayload = {
+            name: trigger?.name,
+            slug: trigger?.slug,
+            parameters: (trigger?.formData as FunctionParameter[] | null)?.map((param) => ({
+              name: param.name,
+              value: param?.valueRef,
+              type: param?.type,
+            })),
+            trigger_id: trigger?._id,
+            type: trigger?.type,
+          }
+          const steps = this.workflows.steps
+          const stepsPayload = {
+            steps: steps?.map((step) => ({
+              name: step.name,
+              parameters: (step.formData as FunctionParameter[] | null)?.map((param) => ({
+                name: param.name,
+                value: param?.valueRef,
+                type: param?.type,
+              })),
+              function_id: step._id,
+              function: step.slug,
+            }))
+          }
+          const res = await axios.post(
+            '/v1/flows',
+            {
+              name: generateSlug(5),
+              trigger: triggerPayload,
+              steps: stepsPayload.steps
+            },
+            authstore.getAuthHeader
+          )
+          console.log({ workflowResponse: res.data })
+          resolve(true)
+        } catch (error) {
+          reject(error);
+        } finally {
+          this.creatingWorkflow = false
+        }
+      });
+    }
   },
 });

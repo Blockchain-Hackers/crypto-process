@@ -35,6 +35,7 @@
 
         <button
           v-if="canCreateWorkflow"
+          @click="createWorkflow"
           class="tw-w-full sm:tw-w-[600px] tw-bg-primary tw-text-white tw-py-4 tw-rounded-md
           tw-font-medium hover:tw-ring-4 tw-ring-primary/30 transition-all tw-duration-300"
           :disabled="creatingWorkflow">
@@ -60,6 +61,7 @@ import { useTriggerStore } from '@/stores/triggers';
 import { useFunctionsStore } from '@/stores/functions';
 import { useWorkflowStore } from '@/stores/workflow';
 import { useRouter } from 'vue-router';
+import { toast } from "vue3-toastify";
 
 const props = defineProps<{
   modelValue?: boolean
@@ -103,4 +105,26 @@ const canCreateWorkflow = computed(()=>(
   workflowStore.hasSteps
 ))
 const creatingWorkflow = computed(()=>workflowStore.creatingWorkflow)
+const createWorkflow = async() => {
+  const id = toast.loading("creating your workflow...", {
+    position: toast.POSITION.TOP_RIGHT,
+  });
+  workflowStore.createWorkflow().then(() => {
+    toast.update(id, {
+      render: "workflow created",
+      type: "success",
+      isLoading: false,
+    })
+    dialog.value = false
+    emits('update:modelValue', false)
+    router.replace({query: {}})
+    workflowStore.clearWorkflowCreation()
+  }).catch((err) => {
+    toast.update(id, {
+      render: "workflow creation failed",
+      type: "error",
+      isLoading: false,
+    });
+  })
+}
 </script>
