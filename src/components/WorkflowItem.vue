@@ -77,7 +77,7 @@
       v-show="canAddStep || hasSteps"
       :class="[
         {
-          'after:tw-absolute after:tw-top-full after:tw-w-px after:tw-bg-black/50 after:tw-h-[72px]':
+          'after:tw-absolute after:tw-top-full after:tw-w-px after:tw-bg-orange-500 after:tw-h-[72px]':
             !isLastStep,
         },
       ]"
