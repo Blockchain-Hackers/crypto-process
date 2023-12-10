@@ -36,8 +36,8 @@
 
         <div class="tw-mt-3">
           <ReturnsForm
-            :fields="formToReturn?.parameters!"
-            :on-submit="(data:any)=>{console.log(data);}"
+            :fields="formToReturn!"
+            :on-submit="(formData:any)=>workflowStore.updateStep({localId, data: formData, isTrigger: props.isTrigger})"
           />
         </div>
       </div>
@@ -54,7 +54,7 @@
         @click="emits('add-step')"
         :class="[
             { '!tw-flex': isLastStep && canAddStep },
-          { 'before:tw-absolute before:tw-bottom-full before:tw-w-px before:tw-bg-black/50 before:tw-h-[20px]': canAddStep },
+          { 'before:tw-absolute before:tw-bottom-full before:tw-w-px before:tw-bg-black/50 before:tw-h-[20px]': canAddStep || hasSteps },
           { 'after:tw-absolute after:tw-top-full after:tw-w-px after:tw-bg-black/50 after:tw-h-[20px]': !isLastStep },
         ]"
         class="tw-absolute tw-top-[20px] tw-bg-gray-200 hover:tw-bg-gray-300
@@ -76,7 +76,9 @@ import type {
   Trigger,
   Function,
   WorkflowTriggerData,
-  WorkflowFunctionData
+  WorkflowFunctionData,
+  TriggerParameter,
+  FunctionParameter,
 } from '@/types/workflow';
 import { useWorkflowStore } from '@/stores/workflow';
 
@@ -90,7 +92,7 @@ const emits = defineEmits<{
 }>()
 
 const localId = ref(props?.step?.localId ?? new Date().toJSON())
-const canAddStep = ref(!!props?.step?.canAddNextStep || props.isTrigger) // if it's a trigger, it can always add a step
+const canAddStep = computed(()=>!!props?.step?.canAddNextStep || props.isTrigger) // if it's a trigger, it can always add a step
 const hasSteps = ref(!props.isLastStep)
 
 const activeStepStage = ref()
@@ -111,20 +113,20 @@ const fantomTabsForStepCreationStage = [
 
 const workflowStore = useWorkflowStore()
 const handleStoreTriggerStep = (trigger: Trigger) => {
-  console.log({trigger})
   workflowStore.setSelectedTriggerStep({trigger, localId: localId.value})
   activeStepStage.value = fantomTabsForStepCreationStage[1]
 }
 
 const handleStoreFunctionStep = (function_: Function) => {
-  console.log({function_})
   workflowStore.setSelectedFunctionStep({function_, localId: localId.value})
   activeStepStage.value = fantomTabsForStepCreationStage[1]
 }
 
 const formToReturn = computed(()=>{
   const stepInfo = props.isTrigger ? workflowStore.getTrigger : workflowStore.getStep(localId.value)
-  return workflowStore.getTriggerOrFunctionById({_id: stepInfo?._id ?? '', isTrigger: props.isTrigger})
+  // if formData is available, it means that the step has been created
+  return stepInfo?.formData as (TriggerParameter | FunctionParameter)[] | null ??
+    workflowStore.getTriggerOrFunctionById({_id: stepInfo?._id ?? '', isTrigger: props.isTrigger})?.parameters
 })
 const onBack = () => {
   activeStepStage.value=fantomTabsForStepCreationStage[0]

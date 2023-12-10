@@ -12,6 +12,7 @@ export type FunctionParameter = {
   }[]
   created_at: string;
   updated_at: string;
+  valueRef?: any
 }
 export type Function = {
   _id: string;
@@ -37,6 +38,7 @@ export type TriggerParameter = {
     name: string;
     value: string | number;
   }[]
+  valueRef?: any
 }
 export type Trigger = {
   _id: string;
@@ -56,8 +58,8 @@ export type StepData<T> = {
   formData: T | null,
 }
 
-export type WorkflowTriggerData = StepData<Trigger>
-export type WorkflowFunctionData = StepData<Function>
+export type WorkflowTriggerData = StepData<TriggerParameter>
+export type WorkflowFunctionData = StepData<FunctionParameter>
 export type WorkflowCookieData = {
   trigger: WorkflowTriggerData | null
 } & {

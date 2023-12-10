@@ -23,19 +23,20 @@ import type { TriggerParameter, FunctionParameter } from '@/types/workflow'
 import { ref } from 'vue';
 
 const props = defineProps<{
-  fields: TriggerParameter[] | FunctionParameter[]
+  fields: (TriggerParameter | FunctionParameter)[]
   onSubmit: (data: any) => void
 }>()
 
 const handleForm = () => {
-  console.log('form submitted')
-  props.onSubmit({fieldsWithValueRef:fieldsWithValueRef.value})
+  props.onSubmit({formData:fieldsWithValueRef.value})
 }
 
 const fieldsWithValueRef = ref(props.fields.map((field) => {
   return {
     ...field,
-    valueRef: field.formElement === 'object' ? [{key:'',value:''}] : ''
+    valueRef: field.formElement === 'object' ?
+      field?.valueRef ?? [{key:'',value:''}] :
+      field?.valueRef ?? ''
   }
 }))
 </script>
