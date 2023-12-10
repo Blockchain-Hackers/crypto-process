@@ -111,9 +111,6 @@
         </div>
       </div>
     </div>
-    <v-snackbar v-model="snackbar.show">
-      {{ snackbar.text }}
-    </v-snackbar>
   </div>
 </template>
 
@@ -121,6 +118,7 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
+import { toast } from "vue3-toastify";
 
 const form = ref({
   email: "",
@@ -130,27 +128,32 @@ const form = ref({
 });
 const showPassword = ref(false);
 
-const snackbar = ref({
-  show: false,
-  text: "",
-});
-
 const router = useRouter();
 const authStore = useAuthStore();
 const registering = ref(false);
 const handleRegister = async () => {
   registering.value = true;
+  const id = toast.loading("registering you...", {
+    position: toast.POSITION.TOP_RIGHT,
+  });
   await authStore.register(form.value)
     .then(() => {
-      snackbar.value.show = true;
-      snackbar.value.text = 'Registration successful please proceed to login';
+      toast.update(id, {
+        render: "registration successful",
+        type: "success",
+        isLoading: false,
+      });
       router.push("/login");
     })
     .catch((err) => {
-      snackbar.value.show = true;
-      snackbar.value.text = err.message;
+      toast.update(id, {
+        render: err.message || "registration failed",
+        type: "error",
+        isLoading: false,
+      });
     })
     .finally(() => {
+      setTimeout(() => toast.remove(id), 1000);
       registering.value = false;
     })
 };

@@ -80,10 +80,6 @@
         </div>
       </div>
     </div>
-
-    <v-snackbar v-model="snackbar.show">
-      {{ snackbar.text }}
-    </v-snackbar>
   </div>
 </template>
 
@@ -91,6 +87,7 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
+import { toast } from "vue3-toastify";
 
 const form = ref({
   email: "",
@@ -98,28 +95,33 @@ const form = ref({
 });
 const showPassword = ref(false);
 
-const snackbar = ref({
-  show: false,
-  text: "",
-});
-
 const router = useRouter();
 const logingIn = ref(false);
 const authStore = useAuthStore();
 const handleLogin = async () => {
   logingIn.value = true;
+  const id = toast.loading("login you in...", {
+    position: toast.POSITION.TOP_RIGHT,
+  });
   await authStore.login(form.value)
     .then(() => {
-      snackbar.value.show = true;
-      snackbar.value.text = 'Login successful'
+      toast.update(id, {
+        render: "login successful",
+        type: "success",
+        isLoading: false,
+      });
       router.push("/");
     })
     .catch((err) => {
-      snackbar.value.show = true;
-      snackbar.value.text = err.message;
+      toast.update(id, {
+        render: "login failed",
+        type: "error",
+        isLoading: false,
+      });
     })
     .finally(() => {
       logingIn.value = false;
+      setTimeout(() => toast.remove(id), 1000);
     })
 };
 </script>
