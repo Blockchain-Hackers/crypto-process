@@ -3,7 +3,7 @@
     class="tw-ring tw-ring-orange-500/30 tw-rounded-md">
     <div>
       <div class="tw-flex tw-justify-between tw-p-2 tw-bg-orange-200/5">
-        <h3 class="tw-text-lg">Trigger: <strong>{{ workflow.name }}</strong></h3>
+        <h3 class="tw-text-lg"><strong>{{ workflow.name }}</strong></h3>
         <v-icon
           @click="foldTrigger = !foldTrigger"
           class="tw-cursor-pointer tw-text-black">
