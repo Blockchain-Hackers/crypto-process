@@ -1,21 +1,13 @@
 <template>
   <div class="">
-    <div v-if="showNotice" class="tw-block tw-p-3">
-      <SeedPhraseNotice
-        class="tw-block tw-w-full"
-        :is-dismissable="true"
-        @showNotice="(show: boolean) => showNotice = show"
-      />
-    </div>
-
     <div
-      class="tw-bg-gradient-to-r tw-from-primary/10 tw-to-transparent tw-p-5 tw-space-y-4"
+      class="tw-p-5 tw-space-y-4"
     >
       <h1 class="tw-text-3xl">View History of your workflow Runs</h1>
 
       <section class="tw-py-1 tw-bg-blueGray-50">
         <div
-          class="tw-w-full tw-xl:w-8/12 tw-mb-12 tw-xl:mb-0 tw-px-4 tw-mx-auto"
+          class="tw-w-full tw-xl:w-8/12 tw-mb-12 tw-xl:mb-0 tw-mx-auto"
         >
           <div
             class="tw-relative tw-flex tw-flex-col tw-min-w-0 tw-break-words tw-w-full tw-mb-6 tw-shadow-lg tw-rounded"
@@ -23,10 +15,10 @@
             <div class="tw-rounded-t tw-mb-0 tw-px-4 tw-py-3 tw-border-0">
               <div class="tw-flex tw-flex-wrap tw-items-center">
                 <div
-                  class="tw-relative tw-w-full tw-px-4 tw-max-w-full tw-flex-grow tw-flex-1"
+                  class="tw-relative tw-w-full tw-px-2 tw-max-w-full tw-flex-grow tw-flex-1"
                 >
                   <h3
-                    class="tw-font-semibold tw-text-base tw-text-blueGray-700"
+                    class="tw-font-bold tw-text-base tw-text-blueGray-700"
                   >
                     Workflow Runs
                   </h3>
@@ -114,8 +106,6 @@
 </template>
 
 <script setup lang="ts">
-import SeedPhraseNotice from "@/components/SeedPhraseNotice.vue";
-import WorkflowCreation from "@/components/WorkflowCreation.vue";
 import { useAuthStore } from "@/stores/auth";
 import axios from "axios";
 import Cookies from "universal-cookie";
@@ -125,8 +115,6 @@ import { useRoute, useRouter } from "vue-router";
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
-const showNotice = ref(true);
-const showWorkflowCreation = ref(false);
 
 // get all runs on mounted
 const runs = ref<
