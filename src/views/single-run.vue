@@ -48,7 +48,7 @@
         </div>
       </div>
     </div>
-    <!-- <div
+    <div
       class="tw-bg-white tw-rounded-lg tw-shadow-md"
       v-for="step in run?.steps"
     >
@@ -82,7 +82,7 @@
           />
         </div>
       </div>
-    </div> -->
+    </div>
   </section>
 </template>
 
@@ -98,7 +98,17 @@ const router = useRouter();
 const authStore = useAuthStore();
 const run = ref<{
   _id: string;
-  steps: { success: boolean }[];
+  steps: {
+    function: string;
+    logs: string;
+    message: string;
+    name: string;
+    success: boolean
+    parameters: {
+      name: string;
+      value: any;
+    }[];
+  }[];
   flow_name: string;
   created_at: string;
 
