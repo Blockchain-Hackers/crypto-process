@@ -131,7 +131,7 @@
         </option>
       </select>
       <div class="tw-text-red-400" v-else>
-        Please Add your mailgun account in account settings
+        Please Add your {{ field.formAccountType }} account in account settings
       </div>
     </template>
 
@@ -228,7 +228,7 @@ onMounted(() => {
   if (props.field.formElement === "account") {
     // fetch accounts using axios
     axios
-      .get(`/v1/accounts?type=${props.field.formAccountType}`, {
+      .get(`/v1/accounts?typeId=${props.field.formAccountTypeId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
