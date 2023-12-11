@@ -13,7 +13,11 @@
       <hr class="tw-border-orange-500/30">
       <div class="tw-p-3 tw-text-center">
         <template v-if="!foldTrigger">
-          {{workflow.trigger}}
+          <div class="tw-text-start tw-truncate tw-space-y-1">
+            <h4>Trigger name: <span class="tw-bg-primary tw-p-1 tw-px-2 tw-text-white tw-rounded-xl">{{ workflow.trigger.name }}</span></h4>
+            <h4>slug: <span class="tw-bg-primary tw-p-1 tw-px-2 tw-text-white tw-rounded-xl">{{ workflow.trigger.slug }}</span></h4>
+            <pre class="tw-text-xs">{{ {parameters: workflow.trigger.parameters} }}</pre>
+          </div>
         </template>
         <template v-else>
           <v-icon class="!tw-text-5xl tw-text-gray-300">mdi-dots-horizontal</v-icon>
@@ -33,7 +37,12 @@
       <hr class="tw-border-orange-500/30">
       <div class="tw-p-3 tw-text-center">
         <template v-if="!foldSteps">
-          {{workflow.steps}}
+          <div v-for="step in workflow.steps" class="tw-text-start tw-truncate tw-space-y-1">
+            <h4>Step name: <span class="tw-bg-primary tw-p-1 tw-px-2 tw-text-white tw-rounded-xl">{{ step.name }}</span></h4>
+            <h4>Function: <span class="tw-bg-primary tw-p-1 tw-px-2 tw-text-white tw-rounded-xl">{{ step.function }}</span></h4>
+            <h4>Function_id: <span class="tw-bg-primary tw-p-1 tw-px-2 tw-text-white tw-rounded-xl">{{ step.function_id }}</span></h4>
+            <pre class="tw-text-xs">{{ {parameters: step.parameters} }}</pre>
+          </div>
         </template>
         <template v-else>
           <v-icon class="!tw-text-5xl tw-text-gray-300">mdi-dots-horizontal</v-icon>
