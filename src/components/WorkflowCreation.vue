@@ -116,7 +116,7 @@ const createWorkflow = async() => {
       isLoading: false,
     })
     dialog.value = false
-    emits('update:modelValue', false)
+    setTimeout(() => emits('update:modelValue', false));
     router.replace({query: {}})
     workflowStore.clearWorkflowCreation()
   }).catch((err) => {

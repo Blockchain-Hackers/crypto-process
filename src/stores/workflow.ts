@@ -224,7 +224,7 @@ export const useWorkflowStore = defineStore("workflow", {
           this.creatingWorkflow = true
           const trigger = this.workflows.trigger
           const triggerPayload = {
-            name: trigger?.name,
+            name: trigger?.slug,
             slug: trigger?.slug,
             parameters: (trigger?.formData as FunctionParameter[] | null)?.map((param) => ({
               name: param.name,
@@ -256,7 +256,7 @@ export const useWorkflowStore = defineStore("workflow", {
             },
             authstore.getAuthHeader
           )
-          console.log({ workflowResponse: res.data })
+          // console.log({ workflowResponse: res.data })
           resolve(true)
         } catch (error) {
           reject(error);
@@ -264,6 +264,20 @@ export const useWorkflowStore = defineStore("workflow", {
           this.creatingWorkflow = false
         }
       });
-    }
+    },
+    fetchWorkflows():Promise<any[]> {
+      const authstore = useAuthStore();
+      return new Promise(async (resolve, reject) => {
+        try {
+          const { data } = await axios.get(
+            "/v1/flows",
+            authstore.getAuthHeader
+          );
+          resolve(data.data as any[]);
+        } catch (error) {
+          reject(error);
+        }
+      });
+    },
   },
 });

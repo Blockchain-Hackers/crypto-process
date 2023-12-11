@@ -19,14 +19,45 @@
         Create workflow
       </button>
     </div>
-
     <WorkflowCreation v-model="showWorkflowCreation" />
+
+    <div class="tw-p-5 tw-mt-3">
+      <h2 class="tw-font-medium tw-text-lg tw-mb-2">All your workflows would be listed below</h2>
+      <div class="tw-flex tw-flex-col tw-gap-10">
+        <template v-if="!fetchingWorkflows && (workflows || []).length">
+          <CreatedWorkflowItem
+            v-for="(workflow,i) in workflows" :key="i"
+            :name="workflow.name"
+            :workflow="workflow"
+          />
+        </template>
+        <template v-if="fetchingWorkflows">
+          <div
+            class="tw-border-4 tw-border-dashed tw-rounded-xl tw-h-60
+            tw-flex tw-flex-col tw-items-center tw-justify-center">
+            <v-icon class="!tw-text-2xl tw-text-gray-400 tw-animate-spin">mdi-loading</v-icon>
+            <p class="tw-text-gray-600 tw-font-medium">Fetching workflows...</p>
+          </div>
+        </template>
+        <template v-if="!fetchingWorkflows && (workflows || []).length === 0">
+          <div
+            v-if="(workflows || []).length === 0"
+            class="tw-border-4 tw-border-dashed tw-rounded-xl tw-h-60
+            tw-flex tw-flex-col tw-items-center tw-justify-center">
+            <v-icon class="!tw-text-7xl tw-text-gray-400">mdi-bat</v-icon>
+            <p class="tw-text-gray-600 tw-font-medium">No workflows created yet</p>
+          </div>
+        </template>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import SeedPhraseNotice from '@/components/SeedPhraseNotice.vue';
 import WorkflowCreation from '@/components/WorkflowCreation.vue';
+import CreatedWorkflowItem from '@/components/CreatedWorkflowItem.vue';
+import { useWorkflowStore } from '@/stores/workflow';
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -43,5 +74,22 @@ onMounted(() => {
     // TODO: properly wait for network to fetch triggers and functions before showing workflow creation
     if(key.includes('step')) setTimeout(()=>showWorkflowCreation.value = true, 1000)
   })
+})
+
+const workflowStore = useWorkflowStore()
+const workflows = ref<any[]>([])
+const fetchingWorkflows = ref(false)
+onMounted(()=>{
+  fetchingWorkflows.value = true
+  workflowStore.fetchWorkflows()
+    .then((data) => {
+      workflows.value = data
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+    .finally(() => {
+      fetchingWorkflows.value = false
+    })
 })
 </script>
