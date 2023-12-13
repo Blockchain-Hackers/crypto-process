@@ -7,7 +7,7 @@
         class="tw-flex-grow tw-flex tw-justify-between sm:tw-items-center
         tw-flex-col sm:tw-flex-row tw-items-start tw-gap-4">
         <p class="tw-text-sm">
-          Hi, <em class="tw-not-italic tw-font-semibold">Sire</em> a lot of what
+          Hi, <em class="tw-not-italic tw-font-semibold">{{pseudNname}}</em> a lot of what
           you'll be doing here requires a private key. Lets help you get one.
         </p>
         <button
@@ -57,6 +57,7 @@ const emits = defineEmits<{
   (e: "update:modelValue", value: boolean): void;
 }>();
 
+const pseudNname = computed(()=>authStore.getPseudoName);
 const seedPhraseDialog = ref(false);
 const modelRef = computed(()=>props.modelValue);
 watch(modelRef, (value) => {

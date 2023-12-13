@@ -23,7 +23,7 @@
 
         <v-icon
           v-if="activeStepStage==='created'"
-          @click="activeStepStage = fantomTabsForStepCreationStage[1]"
+          @click="activeStepStage = phantomTabsForStepCreationStage[1]"
           class="tw-cursor-pointer !tw-text-primary/50 hover:!tw-text-black">
           mdi-layers-edit
         </v-icon>
@@ -33,7 +33,7 @@
     <div class="tw-text-3xl tw-p-3">
       <!-- this is not rendered anywhere, just the state it generates is needed -->
       <Tabs
-        :tab_list="fantomTabsForStepCreationStage"
+        :tab_list="phantomTabsForStepCreationStage"
         :value="activeStepStage"
         :query_name="'step_stage_' + localId"
         @model-value="($event:any) => activeStepStage = $event"
@@ -58,7 +58,6 @@
         </button>
 
         <div class="tw-mt-3">
-          <!-- {{ formToReturn }} -->
           <ReturnsForm
             :fields="formToReturn!"
             :on-submit="handleFormSubmit"
@@ -114,7 +113,6 @@ import type {
 } from "@/types/workflow";
 import { useWorkflowStore } from "@/stores/workflow";
 import { useRoute, useRouter } from "vue-router";
-import { nextTick } from "process";
 
 const props = defineProps<{
   step: WorkflowTriggerData | WorkflowFunctionData | undefined;
@@ -136,7 +134,7 @@ const canAddStep = computed(
 const hasSteps = ref(!props.isLastStep);
 
 const activeStepStage = ref();
-const fantomTabsForStepCreationStage = [
+const phantomTabsForStepCreationStage = [
   {
     name: "step selection",
     slug: "step_selection",
@@ -154,13 +152,12 @@ const fantomTabsForStepCreationStage = [
 const workflowStore = useWorkflowStore();
 const handleStoreTriggerStep = (trigger: Trigger) => {
   workflowStore.setSelectedTriggerStep({ trigger, localId: localId.value });
-  activeStepStage.value = fantomTabsForStepCreationStage[1];
+  activeStepStage.value = phantomTabsForStepCreationStage[1];
 };
 
 const handleStoreFunctionStep = (function_: Function) => {
-  console.log({ function_ })
   workflowStore.setSelectedFunctionStep({ function_, localId: localId.value });
-  activeStepStage.value = fantomTabsForStepCreationStage[1];
+  activeStepStage.value = phantomTabsForStepCreationStage[1];
 };
 
 const formToReturn = computed(() => {
@@ -176,8 +173,13 @@ const formToReturn = computed(() => {
     })?.parameters
   );
 });
+
+const isDirty = computed(()=>props.step?.formData !== null)
 const onBack = () => {
-  activeStepStage.value=fantomTabsForStepCreationStage[0]
+  let proceed:boolean = true;
+  if(isDirty.value) proceed = confirm('These form data will be cleared. Are you sure you want to proceed?')
+  if(!proceed) return
+  activeStepStage.value=phantomTabsForStepCreationStage[0]
 }
 const router = useRouter();
 const route = useRoute();
@@ -193,6 +195,6 @@ const handleRemoveStep = () => {
 
 const handleFormSubmit = (formData: any) => {
   workflowStore.updateStep({localId: localId.value, data: formData, isTrigger: props.isTrigger})
-  activeStepStage.value=fantomTabsForStepCreationStage[2]
+  activeStepStage.value=phantomTabsForStepCreationStage[2]
 }
 </script>

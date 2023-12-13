@@ -25,7 +25,7 @@
 
       <v-menu activator="#account-type" transition="slide-y-transition">
         <ul
-          class="tw-bg-white tw-p-1 tw-mt-2 tw-rounded-lg tw-flex tw-flex-col tw-gap-1"
+          class="tw-bg-white tw-p-1 tw-mt-2 tw-rounded-lg tw-flex tw-flex-col tw-gap-1 tw-shadow-lg"
         >
           <li
             v-for="(item, index) in accountTypes"

@@ -27,7 +27,10 @@ export const useAuthStore = defineStore("auth", {
           Authorization: `Bearer ${state.token}`
         }
       } : {} as AuthHeader | {}
-    }
+    },
+    getPseudoName: (state) => {
+      return (state.user.email || '').split('@')?.[0] || ''
+    },
   },
   actions: {
     register(

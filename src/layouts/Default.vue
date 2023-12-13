@@ -15,7 +15,7 @@
         <div
           :class="{ 'tw-left-[220px]':openMobileNav }"
           class="sm:tw-hidden tw-flex tw-items-center tw-px-3 tw-h-14 tw-border-b tw-border-primary/30
-          tw-fixed tw-top-0 tw-inset-x-0 tw-bg-white tw-text-xl tw-text-primary
+          tw-fixed tw-top-0 tw-inset-x-0 tw-bg-white tw-text-xl tw-text-primary tw-z-20
           before:tw-absolute before:tw-inset-0 before:tw-bg-primary/10 before:tw-z-[-1]">
           <v-icon @click.stop="openMobileNav=!openMobileNav">mdi-menu</v-icon>
         </div>
