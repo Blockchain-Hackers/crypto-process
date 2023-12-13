@@ -71,7 +71,7 @@ export type StepData<T> = {
 
 export type WorkflowTriggerData = StepData<TriggerParameter>;
 export type WorkflowFunctionData = StepData<FunctionParameter>;
-export type WorkflowCookieData = {
+export type WorkflowLocalData = {
   trigger: WorkflowTriggerData | null;
 } & {
   steps: WorkflowFunctionData[];

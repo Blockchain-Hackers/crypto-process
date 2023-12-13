@@ -2,7 +2,7 @@ import type {
   Function,
   FunctionParameter,
   Trigger,
-  WorkflowCookieData,
+  WorkflowLocalData,
   WorkflowFunctionData,
   WorkflowTriggerData,
 } from "@/types/workflow";
@@ -17,18 +17,18 @@ import axios from "axios";
 const cookies = useCookies(["workflow"]);
 export const useWorkflowStore = defineStore("workflow", {
   state: () => ({
-    workflows: cookies.get<WorkflowCookieData>("workflow") || {
+    workflows: cookies.get<WorkflowLocalData>("workflow") || {
       trigger: null,
       steps: [],
     },
     creatingWorkflow: false
   }),
   getters: {
-    getTrigger: () => {
-      return cookies.get<WorkflowCookieData>("workflow")?.trigger;
+    getTrigger: (state) => {
+      return state.workflows.trigger
     },
-    getStep: () => (localId: string) => {
-      const steps = cookies.get<WorkflowCookieData>("workflow")?.steps;
+    getStep: (state) => (localId: string) => {
+      const steps = state.workflows.steps
       return steps.find((step) => step.localId === localId) ?? null;
     },
     hasSteps: (state) => state.workflows.steps.length > 0,
@@ -66,10 +66,11 @@ export const useWorkflowStore = defineStore("workflow", {
         type: trigger.type,
       };
 
-      cookies.set("workflow", {
+      const existingSteps = localStorage.getItem('workflow') ? (JSON.parse(localStorage.getItem('workflow') as string) as WorkflowLocalData).steps : []
+      localStorage.setItem('workflow', JSON.stringify({
         trigger: triggerPayload,
-        steps: cookies.get<WorkflowCookieData>("workflow")?.steps ?? [],
-      });
+        steps: existingSteps
+      }))
       this.workflows.trigger = triggerPayload;
     },
     setSelectedFunctionStep({
@@ -79,8 +80,8 @@ export const useWorkflowStore = defineStore("workflow", {
       function_: Function;
       localId: string;
     }) {
-      const stepsCookie = cookies.get<WorkflowCookieData>("workflow")?.steps;
-      const existingSteps = [...(stepsCookie ?? [])];
+      const stepsLocalStorage = localStorage.getItem('workflow') ? (JSON.parse(localStorage.getItem('workflow') as string) as WorkflowLocalData).steps : []
+      const existingSteps = [...(stepsLocalStorage ?? [])];
       const stepPayload: WorkflowFunctionData = {
         _id: function_._id,
         localId,
@@ -101,10 +102,10 @@ export const useWorkflowStore = defineStore("workflow", {
       });
       if (!stepExists) existingSteps.push(stepPayload);
 
-      cookies.set("workflow", {
-        trigger: cookies.get<WorkflowCookieData>("workflow")?.trigger,
-        steps: existingSteps,
-      });
+      localStorage.setItem('workflow', JSON.stringify({
+        trigger: localStorage.getItem('workflow') ? (JSON.parse(localStorage.getItem('workflow') as string) as WorkflowLocalData).trigger : null,
+        steps: existingSteps
+      }))
       this.workflows.steps = existingSteps;
     },
     updateStep({
@@ -117,24 +118,23 @@ export const useWorkflowStore = defineStore("workflow", {
       isTrigger: boolean;
     }) {
       if (isTrigger) {
-        const existingTrigger =
-          cookies.get<WorkflowCookieData>("workflow")?.trigger;
+        const existingTrigger = localStorage.getItem('workflow') ? (JSON.parse(localStorage.getItem('workflow') as string) as WorkflowLocalData).trigger : null
         if (!existingTrigger) return;
 
         const triggerPayload: WorkflowTriggerData = {
           ...existingTrigger,
           formData: data.formData,
         };
-        cookies.set("workflow", {
+        localStorage.setItem('workflow', JSON.stringify({
           trigger: triggerPayload,
-          steps: cookies.get<WorkflowCookieData>('workflow')?.steps
-        })
+          steps: localStorage.getItem('workflow') ? (JSON.parse(localStorage.getItem('workflow') as string) as WorkflowLocalData).steps : []
+        }))
         this.workflows.trigger = triggerPayload
         return
       }
 
-      const existingSteps = cookies.get<WorkflowCookieData>("workflow")?.steps;
-      existingSteps?.map((step, i) => {
+      const existingSteps = localStorage.getItem('workflow') ? (JSON.parse(localStorage.getItem('workflow') as string) as WorkflowLocalData).steps : []
+      existingSteps.map((step, i) => {
         if (step.localId === localId) {
           // console.log(data);
           existingSteps[i].formData = data.formData;
@@ -142,18 +142,17 @@ export const useWorkflowStore = defineStore("workflow", {
           existingSteps[i].canAddNextStep = true;
         }
       });
-      cookies.set("workflow", {
-        trigger: cookies.get<WorkflowCookieData>("workflow")?.trigger,
-        steps: existingSteps,
-      });
+      localStorage.setItem('workflow', JSON.stringify({
+        trigger: localStorage.getItem('workflow') ? (JSON.parse(localStorage.getItem('workflow') as string) as WorkflowLocalData).trigger : null,
+        steps: existingSteps
+      }))
       this.workflows.steps = existingSteps;
     },
     createNextStep() {
-      const existingSteps =
-        cookies.get<WorkflowCookieData>("workflow")?.steps ?? [];
+      const existingSteps = localStorage.getItem('workflow') ? (JSON.parse(localStorage.getItem('workflow') as string) as WorkflowLocalData).steps : []
       const localId = new Date().toJSON();
-      const payload: WorkflowCookieData = {
-        trigger: cookies.get<WorkflowCookieData>("workflow")?.trigger,
+      const payload: WorkflowLocalData = {
+        trigger: localStorage.getItem('workflow') ? (JSON.parse(localStorage.getItem('workflow') as string) as WorkflowLocalData).trigger : null,
         steps: [
           ...existingSteps,
           {
@@ -167,21 +166,21 @@ export const useWorkflowStore = defineStore("workflow", {
             type: "",
           },
         ],
-      };
-      cookies.set("workflow", payload);
-      this.workflows = payload;
+      }
+      localStorage.setItem('workflow', JSON.stringify(payload))
+      this.workflows = {...payload};
     },
     removeStep({localId}: {localId:string}) {
-      const existingSteps = cookies.get<WorkflowCookieData>('workflow')?.steps
+      const existingSteps = localStorage.getItem('workflow') ? (JSON.parse(localStorage.getItem('workflow') as string) as WorkflowLocalData).steps : []
       const newSteps = existingSteps?.filter((step) => step.localId !== localId)
-      cookies.set('workflow', {
-        trigger: cookies.get<WorkflowCookieData>('workflow')?.trigger,
+      localStorage.setItem('workflow', JSON.stringify({
+        trigger: localStorage.getItem('workflow') ? (JSON.parse(localStorage.getItem('workflow') as string) as WorkflowLocalData).trigger : null,
         steps: newSteps
-      })
+      }))
       this.workflows.steps = newSteps ?? []
     },
     clearWorkflowCreation() {
-      cookies.remove("workflow");
+      localStorage.removeItem('workflow')
       this.workflows = {
         trigger: null,
         steps: [],
@@ -189,7 +188,7 @@ export const useWorkflowStore = defineStore("workflow", {
     },
     toJSON() {
       // get all triggers, their params and outputs also function params and outputs, reduce parameters to object from array
-      const workflow = cookies.get<WorkflowCookieData>("workflow");
+      const workflow = localStorage.getItem('workflow') ? (JSON.parse(localStorage.getItem('workflow') as string) as WorkflowLocalData) : null
       const trigger = workflow?.trigger;
       const steps = workflow?.steps;
       const object = {

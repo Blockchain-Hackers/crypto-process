@@ -10,7 +10,7 @@
               ? step?.name : 'Trigger'}` :
             `${step?.name && (activeStepStage==='step_form' || activeStepStage==='created')
               ? step?.name : 'Step'}`
-        }}
+        }} {{ localId }}
       </h3>
 
       <div class="tw-space-x-3">
@@ -58,6 +58,7 @@
         </button>
 
         <div class="tw-mt-3">
+          <!-- {{ formToReturn }} -->
           <ReturnsForm
             :fields="formToReturn!"
             :on-submit="handleFormSubmit"
@@ -70,6 +71,10 @@
           <v-icon class="tw-text-emerald-500">mdi-check</v-icon>
           <span class="tw-text-xl tw-font-medium">Step ready</span>
         </div>
+
+        <pre class="tw-text-xs">
+          {{ {isLastStep, hasSteps, canAddStep, localId, isTrigger} }}
+        </pre>
       </div>
     </div>
 
@@ -157,6 +162,7 @@ const handleStoreTriggerStep = (trigger: Trigger) => {
 };
 
 const handleStoreFunctionStep = (function_: Function) => {
+  console.log({ function_ })
   workflowStore.setSelectedFunctionStep({ function_, localId: localId.value });
   activeStepStage.value = fantomTabsForStepCreationStage[1];
 };
