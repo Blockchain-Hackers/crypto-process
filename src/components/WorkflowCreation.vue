@@ -16,6 +16,7 @@
       </div>
 
       <v-card
+        id="workflows"
         class="!tw-bg-gray-50 !tw-py-12 !tw-px-4
         !tw-flex !tw-flex-col sm:!tw-items-center !tw-gap-[72px]">
         <WorkflowItem
@@ -96,7 +97,17 @@ const closeDialog = () => {
 const workflowStore = useWorkflowStore()
 const trigger = computed(()=>workflowStore.workflows.trigger)
 const steps = computed(()=>workflowStore.workflows.steps)
-const addStep = () => workflowStore.createNextStep()
+const addStep = () => {
+  workflowStore.createNextStep()
+  const workflows = document.getElementById('workflows')
+  setTimeout(()=>{
+    // scroll to bottom
+    workflows?.scrollTo({
+      top: workflows.scrollHeight,
+      behavior: 'smooth'
+    })
+  })
+}
 const removeStep = (localId: string) => workflowStore.removeStep({localId})
 
 const canCreateWorkflow = computed(()=>(
