@@ -99,7 +99,7 @@
             <h2 class="tw-text-xl tw-font-bold">
               Connect your {{ selectedAccountType }} account
             </h2>
-            <form @submit.prevent="createAccount" class="tw-mt-4 tw-text-base">
+            <form @submit.prevent="createAccount" class="tw-mt-4 tw-text-base tw-flex tw-flex-col tw-gap-3">
               <label class="tw-relative tw-block">
                 <span class="tw-absolute tw-text-base tw-pl-3 tw-pt-1">
                   Give Your Account a Name
