@@ -47,6 +47,9 @@ export const useWorkflowStore = defineStore("workflow", {
       if(!state.workflows.trigger) return false
       return state.workflows.trigger.formData !== null
     },
+    isWorkflowFormDirty: (state) => {
+      return (!!state.workflows.trigger && state.workflows.trigger.formData !== null) || state.workflows.steps.length > 0
+    },
   },
   actions: {
     setSelectedTriggerStep({

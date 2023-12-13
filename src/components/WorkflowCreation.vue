@@ -86,8 +86,9 @@ watch(modelValueRef, value => {
 })
 const router = useRouter()
 const closeDialog = () => {
-  const res = confirm('Are you sure you want to close this dialog? Any unsaved changes will be lost.')
-  if(!res) return
+  let shouldClose:boolean = true
+  if(workflowStore.isWorkflowFormDirty) shouldClose = confirm('Are you sure you want to close this dialog? Any unsaved changes will be lost.')
+  if(!shouldClose) return
   dialog.value = false
   emits('update:modelValue', false)
   router.replace({query: {}})
