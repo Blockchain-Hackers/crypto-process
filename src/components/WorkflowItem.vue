@@ -10,7 +10,7 @@
               ? step?.name : 'Trigger'}` :
             `${step?.name && (activeStepStage==='step_form' || activeStepStage==='created')
               ? step?.name : 'Step'}`
-        }} {{ localId }}
+        }}
       </h3>
 
       <div class="tw-space-x-3">
@@ -71,10 +71,6 @@
           <v-icon class="tw-text-emerald-500">mdi-check</v-icon>
           <span class="tw-text-xl tw-font-medium">Step ready</span>
         </div>
-
-        <pre class="tw-text-xs">
-          {{ {isLastStep, hasSteps, canAddStep, localId, isTrigger} }}
-        </pre>
       </div>
     </div>
 
