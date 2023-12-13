@@ -17,7 +17,7 @@ import axios from "axios";
 const cookies = useCookies(["workflow"]);
 export const useWorkflowStore = defineStore("workflow", {
   state: () => ({
-    workflows: cookies.get<WorkflowLocalData>("workflow") || {
+    workflows: localStorage.getItem('workflow') ? (JSON.parse(localStorage.getItem('workflow') as string) as WorkflowLocalData) : {
       trigger: null,
       steps: [],
     },
