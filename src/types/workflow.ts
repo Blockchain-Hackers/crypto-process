@@ -76,3 +76,10 @@ export type WorkflowLocalData = {
 } & {
   steps: WorkflowFunctionData[];
 };
+
+export type WorkflowHistory = {
+  _id: string;
+  steps: { success: boolean }[];
+  flow_name: string;
+  created_at: string;
+}

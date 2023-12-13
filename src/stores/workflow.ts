@@ -5,6 +5,7 @@ import type {
   WorkflowLocalData,
   WorkflowFunctionData,
   WorkflowTriggerData,
+  WorkflowHistory
 } from "@/types/workflow";
 import { defineStore } from "pinia";
 import { useCookies } from "@vueuse/integrations/useCookies";
@@ -278,5 +279,19 @@ export const useWorkflowStore = defineStore("workflow", {
         }
       });
     },
+    fetchWorkflowHistory():Promise<WorkflowHistory[]>{
+      const authstore = useAuthStore();
+      return new Promise(async (resolve, reject) => {
+        try {
+          const { data } = await axios.get(
+            "/v1/flows/runs",
+            authstore.getAuthHeader
+          );
+          resolve(data.data as any[]);
+        } catch (error) {
+          reject(error);
+        }
+      });
+    }
   },
 });
