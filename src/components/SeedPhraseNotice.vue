@@ -47,10 +47,13 @@ import SeedPhraseGen from "@/components/SeedPhraseGen.vue";
 import { computed, onMounted, ref, watch } from "vue";
 import { useCookies } from "@vueuse/integrations/useCookies";
 import { useAuthStore } from "@/stores/auth";
+import type { AccountPayload, AccountType } from "@/types/auth";
+import { toast } from "vue3-toastify";
 
 const props = defineProps<{
   modelValue?: boolean | undefined;
   isDismissable?: boolean;
+  typeDetails: AccountType | undefined;
 }>();
 const emits = defineEmits<{
   (e: "show-notice", show: boolean): void;
@@ -64,12 +67,41 @@ watch(modelRef, (value) => {
   seedPhraseDialog.value = value;
   emits("update:modelValue", value);
 });
-const onConfirm = ({ wallet, keyName }: { wallet: object, keyName: string }) => {
-  console.log(wallet, keyName);
+const onConfirm = ({ privateKey, keyName }: { privateKey: string, keyName: string }) => {
+  const payload:AccountPayload = {
+    name: keyName,
+    account_type_id: props.typeDetails?._id!,
+    account_type: props.typeDetails?.name!,
+    parameters: [
+      {
+        name: "privateKey",
+        value: privateKey,
+        type: "address",
+      },
+    ],
+  }
 
-  // TODO: save wallet to db
-  seedPhraseDialog.value = false;
-  emits("update:modelValue", false);
+  const id = toast.loading("creating crypto account", {
+    position: toast.POSITION.TOP_RIGHT,
+  });
+  authStore.createAccount(payload)
+    .then(() => {
+      toast.update(id, {
+        render: "successfully created",
+        type: "success",
+        isLoading: false,
+      });
+      seedPhraseDialog.value = false;
+      emits("update:modelValue", false);
+    })
+    .catch((err) => {
+      toast.update(id, {
+        render: "account creation failed",
+        type: "error",
+        isLoading: false,
+      });
+      console.log(err);
+    })
 };
 const onBack = () => {
   seedPhraseDialog.value = false;

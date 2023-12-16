@@ -17,6 +17,20 @@ export type User = {
   hasSetPrivateKey: boolean;
 }
 
+export type AccountType = {
+  _id: string;
+  title: string;
+  name: string;
+  parameters: {
+    _id: string
+    name: string
+    value: string
+    type: string
+    hint: string
+    dataType: string
+  }[];
+}
+
 export type AccountPayload = {
   name: string;
   account_type_id: string;

@@ -5,6 +5,7 @@
         v-model="noticeModel"
         class="tw-block tw-w-full"
         :is-dismissable="false"
+        :typeDetails="cryptoAccountType"
         @showNotice="(show: boolean) => showNotice = show"
       />
     </div>
@@ -155,7 +156,7 @@
 import { computed, onMounted, ref } from "vue";
 import SeedPhraseNotice from "@/components/SeedPhraseNotice.vue";
 import { useAuthStore } from "@/stores/auth";
-import type { Account, AccountPayload } from "@/types/auth";
+import type { Account, AccountPayload, AccountType } from "@/types/auth";
 import { toast } from "vue3-toastify";
 import axios from "axios";
 
@@ -164,9 +165,8 @@ const authStore = useAuthStore();
 const showNotice = ref(true);
 const noticeModel = ref<boolean>();
 const selectedAccountType = ref();
-const accountTypes = ref([
-] as { title: string; _id: string; name: string; parameters: Array<any> }[]);
-
+const accountTypes = ref<AccountType[]>([]);
+const cryptoAccountType = computed(()=>accountTypes.value.find((item) => item.name === "Crypto"));
 const selectedAccount = computed(() => {
   return accountTypes.value.find(
     (item) => item.name === selectedAccountType.value
@@ -218,8 +218,6 @@ const createAccount = async () => {
       };
     }) || [],
   };
-
-  console.log({ test: selectedAccount.value?.parameters })
 
   authStore.createAccount(data)
     .then(() => {

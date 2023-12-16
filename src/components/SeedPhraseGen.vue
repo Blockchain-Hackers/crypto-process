@@ -71,7 +71,7 @@ import { ethers } from 'ethers';
 import { computed, ref } from 'vue';
 
 const props = defineProps<{
-  onConfirm: ({wallet, keyName}:{wallet:object, keyName:string}) => void
+  onConfirm: ({privateKey, keyName}:{privateKey:string, keyName:string}) => void
   onBack: () => void
 }>()
 
@@ -83,7 +83,8 @@ const generateWallet = () => {
 generateWallet()
 
 const confirm = () => {
-  props.onConfirm({wallet: wallet.value, keyName: keyName.value})
+  const mnemonicWallet = ethers.Wallet.fromPhrase(wallet.value?.mnemonic?.phrase);
+  props.onConfirm({privateKey: mnemonicWallet.privateKey, keyName: keyName.value})
 }
 
 const nameKeyModal = ref(false)
