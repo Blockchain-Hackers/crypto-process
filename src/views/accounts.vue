@@ -165,8 +165,6 @@ const showNotice = ref(true);
 const noticeModel = ref<boolean>();
 const selectedAccountType = ref();
 const accountTypes = ref([
-  // { title: 'Mailgun', slug: 'mailgun' },
-  // { title: 'Private key', slug: 'private-key' }
 ] as { title: string; _id: string; name: string; parameters: Array<any> }[]);
 
 const selectedAccount = computed(() => {
@@ -220,6 +218,8 @@ const createAccount = async () => {
       };
     }) || [],
   };
+
+  console.log({ test: selectedAccount.value?.parameters })
 
   authStore.createAccount(data)
     .then(() => {

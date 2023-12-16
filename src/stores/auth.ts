@@ -83,16 +83,6 @@ export const useAuthStore = defineStore("auth", {
       workflowStore.clearWorkflowCreation();
       setTimeout(() => window.location.reload())
     },
-    deleteAccount({accountId}: {accountId: string}) {
-      return new Promise(async (resolve, reject) => {
-        try {
-          await axios.delete(`/v1/accounts/${accountId}`, this.getAuthHeader)
-          resolve(true);
-        } catch (error) {
-          reject(error)
-        }
-      })
-    },
     createAccount(payload: AccountPayload) {
       return new Promise(async (resolve, reject) => {
         try {
@@ -100,8 +90,31 @@ export const useAuthStore = defineStore("auth", {
           console.log({
             data
           })
-          // TODO: add account to user
+          cookies.set('user', {
+            ...this.user,
+            accounts: [
+              ...this.user.accounts,
+              data.data
+            ]
+          })
+          this.user.accounts.push(data.data);
           resolve(data);
+        } catch (error) {
+          reject(error)
+        }
+      })
+    },
+    deleteAccount({accountId}: {accountId: string}) {
+      return new Promise(async (resolve, reject) => {
+        try {
+          await axios.delete(`/v1/accounts/${accountId}`, this.getAuthHeader)
+          const accounts = this.user.accounts.filter(account => account._id !== accountId);
+          cookies.set('user', {
+            ...this.user,
+            accounts
+          })
+          this.user.accounts = accounts;
+          resolve(true);
         } catch (error) {
           reject(error)
         }
