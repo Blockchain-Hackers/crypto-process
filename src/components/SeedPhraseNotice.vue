@@ -102,6 +102,7 @@ const onConfirm = ({ privateKey, keyName }: { privateKey: string, keyName: strin
       });
       console.log(err);
     })
+    .finally(() => setTimeout(() => {toast.remove(id)}, 1000));
 };
 const onBack = () => {
   seedPhraseDialog.value = false;
