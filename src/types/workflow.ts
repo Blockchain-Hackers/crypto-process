@@ -12,6 +12,7 @@ export type FunctionParameter = {
     name: string;
     value: string | number;
   }[];
+  optional?: boolean;
   created_at: string;
   updated_at: string;
   valueRef?: any;
@@ -44,6 +45,7 @@ export type TriggerParameter = {
     name: string;
     value: string | number;
   }[];
+  optional?: boolean;
   valueRef?: any;
 };
 export type Trigger = {
