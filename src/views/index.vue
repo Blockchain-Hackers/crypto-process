@@ -4,6 +4,7 @@
       <SeedPhraseNotice
         class="tw-block tw-w-full"
         :is-dismissable="true"
+        :type-details="cryptoAccountType"
         @showNotice="(show: boolean) => showNotice = show"
       />
     </div>
@@ -58,8 +59,11 @@ import SeedPhraseNotice from '@/components/SeedPhraseNotice.vue';
 import WorkflowCreation from '@/components/WorkflowCreation.vue';
 import CreatedWorkflowItem from '@/components/CreatedWorkflowItem.vue';
 import { useWorkflowStore } from '@/stores/workflow';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
+import type { AccountType } from '@/types/auth';
+import { toast } from 'vue3-toastify';
 
 const route = useRoute()
 const router = useRouter()
@@ -91,5 +95,18 @@ onMounted(()=>{
     .finally(() => {
       fetchingWorkflows.value = false
     })
+})
+
+const authStore = useAuthStore()
+const accountTypes = ref<AccountType[]>([])
+  const cryptoAccountType = computed(()=>accountTypes.value.find((item) => item.name === "Crypto"));
+onMounted(() => {
+  authStore.fetchAccountTypes()
+    .then((res) => {
+      accountTypes.value = res
+    })
+    .catch((err) => {
+      toast.error("failed to fetch account types");
+    });
 })
 </script>

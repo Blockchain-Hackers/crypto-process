@@ -1,4 +1,4 @@
-import type { AccountPayload, User } from "@/types/auth";
+import type { AccountPayload, AccountType, User } from "@/types/auth";
 import { defineStore } from "pinia";
 import { useCookies } from "@vueuse/integrations/useCookies";
 import { useWorkflowStore } from './workflow';
@@ -82,6 +82,16 @@ export const useAuthStore = defineStore("auth", {
       const workflowStore = useWorkflowStore();
       workflowStore.clearWorkflowCreation();
       setTimeout(() => window.location.reload())
+    },
+    async fetchAccountTypes(): Promise<AccountType[]> {
+      return new Promise(async (resolve, reject) => {
+        try {
+          const {data} = await axios.get('/v1/accounts/types', this.getAuthHeader)
+          resolve(data.data);
+        } catch (error) {
+          reject(error)
+        }
+      })
     },
     createAccount(payload: AccountPayload) {
       return new Promise(async (resolve, reject) => {

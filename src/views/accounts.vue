@@ -158,7 +158,6 @@ import SeedPhraseNotice from "@/components/SeedPhraseNotice.vue";
 import { useAuthStore } from "@/stores/auth";
 import type { Account, AccountPayload, AccountType } from "@/types/auth";
 import { toast } from "vue3-toastify";
-import axios from "axios";
 
 const authStore = useAuthStore();
 
@@ -174,16 +173,14 @@ const selectedAccount = computed(() => {
 });
 
 onMounted(() => {
-  axios
-    .get("/v1/accounts/types", {
-      headers: {
-        Authorization: `Bearer ${authStore.getToken}`,
-      },
-    })
+  authStore.fetchAccountTypes()
     .then((res) => {
-      accountTypes.value = res.data.data;
+      accountTypes.value = res
+    })
+    .catch((err) => {
+      toast.error("failed to fetch account types");
     });
-});
+})
 
 const hasAccounts = computed(() => authStore.getAccounts.length > 0);
 const handleDeleteAccount = (account: Account) => {
