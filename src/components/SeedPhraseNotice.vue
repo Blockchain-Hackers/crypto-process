@@ -49,6 +49,7 @@ import { useCookies } from "@vueuse/integrations/useCookies";
 import { useAuthStore } from "@/stores/auth";
 import type { AccountPayload, AccountType } from "@/types/auth";
 import { toast } from "vue3-toastify";
+import { useRouter } from "vue-router";
 
 const props = defineProps<{
   modelValue?: boolean | undefined;
@@ -67,6 +68,7 @@ watch(modelRef, (value) => {
   seedPhraseDialog.value = value;
   emits("update:modelValue", value);
 });
+const router = useRouter();
 const onConfirm = ({ privateKey, keyName }: { privateKey: string, keyName: string }) => {
   const payload:AccountPayload = {
     name: keyName,
@@ -91,8 +93,11 @@ const onConfirm = ({ privateKey, keyName }: { privateKey: string, keyName: strin
         type: "success",
         isLoading: false,
       });
+      authStore.setHasPrivateKey(true)
       seedPhraseDialog.value = false;
       emits("update:modelValue", false);
+      // take them were they can see the account they just created
+      setTimeout(() => router.push("/accounts"), 1000);
     })
     .catch((err) => {
       toast.update(id, {

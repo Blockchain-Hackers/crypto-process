@@ -130,5 +130,12 @@ export const useAuthStore = defineStore("auth", {
         }
       })
     },
+    setHasPrivateKey(value: boolean) {
+      this.user.hasSetPrivateKey = value;
+      cookies.set('user', {
+        ...this.user,
+        hasSetPrivateKey: value
+      })
+    }
   },
 });
