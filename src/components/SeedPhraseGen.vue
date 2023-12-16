@@ -3,10 +3,10 @@
     <h2 class="tw-text-4xl tw-font-mono tw-font-thin tw-text-center">Secure your seedphrase</h2>
 
     <p class="tw-opacity-40">
-      A unique 12-word sequence generated for you when you create a wallet. You enter your seed phrase to open your wallet
+      A unique 12-word sequence is generated for you when you create an account.
     </p>
     <p>
-      Don't lose your seed phrase. If you lose your seed phrase, you lose access to your --something-- account and can <strong>never</strong> get them back.
+      Don't lose your seed phrase. If you lose your seed phrase, you lose access to your account and can <strong>never</strong> get them back.
     </p>
     <p class="tw-opacity-40">
       This is your seed phrase. (1) Write down each position and word, for example,
@@ -38,7 +38,7 @@
     </button>
 
     <v-dialog v-model="nameKeyModal" width="500" persistent class="">
-      <v-card class="!tw-rounded-lg">
+      <v-card class="!tw-rounded-3xl">
         <div class="tw-bg-white tw-p-6">
           <h3>What do we call this key?</h3>
           <form @submit.prevent="confirm" class="tw-flex tw-gap-3 tw-mt-4">
@@ -50,12 +50,12 @@
                 id="apikeyName"
                 placeholder="My Key"
                 required
-                class="tw-w-full tw-bg-gray-100 tw-p-3 tw-rounded-xl tw-outline-none
-                tw-ring tw-ring-primary/50 focus:tw-ring-primary/80"
+                class="tw-w-full tw-bg-gray-100 tw-p-3 tw-rounded-full tw-outline-none
+                tw-ring tw-ring-primary/70 focus:tw-ring-primary"
               />
             </label>
             <button
-              class="tw-bg-primary tw-text-white tw-py-2 tw-px-4 tw-rounded-xl
+              class="tw-bg-primary tw-text-white tw-py-2 tw-px-4 tw-rounded-full
               tw-font-medium hover:tw-ring-4 tw-ring-primary/30 transition-all tw-duration-300">
               Save
             </button>

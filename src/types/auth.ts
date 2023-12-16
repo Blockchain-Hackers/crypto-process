@@ -16,3 +16,14 @@ export type User = {
   accounts: Account[];
   hasSetPrivateKey: boolean;
 }
+
+export type AccountPayload = {
+  name: string;
+  account_type_id: string;
+  account_type: string;
+  parameters: Array<{
+    name: string;
+    value: string;
+    type: string;
+  }>;
+};

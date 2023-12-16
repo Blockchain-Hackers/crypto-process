@@ -1,4 +1,4 @@
-import type { User } from "@/types/auth";
+import type { AccountPayload, User } from "@/types/auth";
 import { defineStore } from "pinia";
 import { useCookies } from "@vueuse/integrations/useCookies";
 import { useWorkflowStore } from './workflow';
@@ -93,15 +93,15 @@ export const useAuthStore = defineStore("auth", {
         }
       })
     },
-    createMailgunAccount(payload: {domain: string; apiKey: string; username: string;}) {
-      return new Promise(async (resolve, reject) => {``
+    createAccount(payload: AccountPayload) {
+      return new Promise(async (resolve, reject) => {
         try {
-          const res = await axios.post('/v1/accounts/mailgun', payload, this.getAuthHeader)
+          const { data } = await axios.post('/v1/accounts', payload, this.getAuthHeader)
           console.log({
-            res
+            data
           })
           // TODO: add account to user
-          resolve(true);
+          resolve(data);
         } catch (error) {
           reject(error)
         }

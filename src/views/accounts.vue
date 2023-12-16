@@ -52,9 +52,7 @@
         >
           <div class="tw-flex tw-items-center tw-justify-between">
             <div class="tw-flex tw-flex-wrap">
-              <v-icon class="!tw-text-4xl !tw-text-orange-500"
-                >mdi-text-account</v-icon
-              >
+              <v-icon class="!tw-text-4xl !tw-text-orange-500">mdi-text-account</v-icon>
               <div class="tw-text-lg tw-ml-3 sm:tw-flex tw-gap-4">
                 <div>
                   <h2 class="tw-font-medium">{{ account.name }}</h2>
@@ -157,7 +155,7 @@
 import { computed, onMounted, ref } from "vue";
 import SeedPhraseNotice from "@/components/SeedPhraseNotice.vue";
 import { useAuthStore } from "@/stores/auth";
-import type { Account } from "@/types/auth";
+import type { Account, AccountPayload } from "@/types/auth";
 import { toast } from "vue3-toastify";
 import axios from "axios";
 
@@ -210,26 +208,21 @@ const createAccount = async () => {
     position: toast.POSITION.TOP_RIGHT,
   });
 
-  const data = {
+  const data: AccountPayload = {
     name: accountForm.value._name,
-    account_type_id: selectedAccount.value?._id,
-    account_type: selectedAccount.value?.name,
+    account_type_id: selectedAccount.value?._id!,
+    account_type: selectedAccount.value?.name!,
     parameters: selectedAccount.value?.parameters.map((item: any) => {
       return {
         name: item.name,
         value: accountForm.value[item.name],
         type: item.type,
       };
-    }),
+    }) || [],
   };
 
-  axios
-    .post("/v1/accounts", data, {
-      headers: {
-        Authorization: `Bearer ${authStore.getToken}`,
-      },
-    })
-    .then((res) => {
+  authStore.createAccount(data)
+    .then(() => {
       toast.update(id, {
         render: "account created",
         type: "success",
