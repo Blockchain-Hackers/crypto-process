@@ -58,6 +58,7 @@ const check = (field:string|number|boolean)=>{
 }
 const formIsFilled = computed(() => {
   return fieldsWithValueRef.value.every((field) => {
+    if(field.optional) return true
     if(field.formElement === 'object') {
       return field.valueRef.every((obj:{key:string,value:any}) => check(obj.key) && check(obj.value))
     }

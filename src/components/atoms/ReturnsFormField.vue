@@ -22,7 +22,7 @@
                 placeholder="key"
                 :class="elementClass"
                 class="tw-w-full"
-                :required="field?.optional ? false : true"
+                :required="!!field?.optional ? false : true"
             />
               <details class="tw-text-sm">
                 <summary>Select Variable from previous steps</summary>
@@ -45,7 +45,7 @@
                 placeholder="value"
                 :class="elementClass"
                 class="tw-w-full"
-                :required="field?.optional ? false : true"
+                :required="!!field?.optional ? false : true"
             />
               <details class="tw-text-sm">
                 <summary>Select Variable from previous steps</summary>
@@ -79,7 +79,7 @@
         :placeholder="field?.hint ?? field.name"
         :class="elementClass"
         class="tw-w-full tw-max-h-40 tw-min-h-[60px]"
-        :required="field?.optional ? false : true"
+        :required="!!field?.optional ? false : true"
       ></textarea>
     </template>
 
@@ -107,7 +107,7 @@
           v-model="value"
           :type="field.formType"
           :placeholder="field?.hint ?? field.name"
-          :required="field?.optional ? false : true"
+          :required="!!field?.optional ? false : true"
         />
         {{ field.name }}
       </span>
@@ -141,7 +141,7 @@
           v-model="value"
           :type="field.formType"
           :placeholder="field?.hint ?? field.name"
-          :required="field?.optional ? false : true"
+          :required="!!field?.optional ? false : true"
         />
         {{ field.name }}
       </span>
@@ -154,7 +154,7 @@
         :placeholder="field?.hint ?? field.name"
         :class="elementClass"
         class="tw-w-full"
-        :required="field?.optional ? false : true"
+        :required="!!field?.optional ? false : true"
       />
       <!-- <div v-if="field.formType != 'object'"> -->
       <details class="tw-text-sm">
