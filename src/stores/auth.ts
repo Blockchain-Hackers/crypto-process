@@ -21,6 +21,7 @@ export const useAuthStore = defineStore("auth", {
     getToken: (state) => state.token,
     getAccounts: (state) => state.user?.accounts || [],
     hasPrivateKey: (state) => state.user?.hasSetPrivateKey || false,
+    hasPrivateKeyLocal: (state) => state.user.accounts.some(account => account.type === 'Crypto'),
     getAuthHeader: (state) => {
       return !!state.token ? {
         headers: {
@@ -124,6 +125,7 @@ export const useAuthStore = defineStore("auth", {
             accounts
           })
           this.user.accounts = accounts;
+          if(!this.hasPrivateKeyLocal) this.setHasPrivateKey(false);
           resolve(true);
         } catch (error) {
           reject(error)
