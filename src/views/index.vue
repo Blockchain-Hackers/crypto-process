@@ -24,7 +24,7 @@
 
     <div class="tw-p-5 tw-mt-3">
       <h2 class="tw-font-medium tw-text-lg tw-mb-2">All your workflows would be listed below</h2>
-      <div class="tw-flex tw-flex-col tw-gap-10">
+      <div class="tw-grid lg:tw-grid-cols-2 tw-gap-10">
         <template v-if="!fetchingWorkflows && (workflows || []).length">
           <CreatedWorkflowItem
             v-for="(workflow,i) in workflows" :key="i"
