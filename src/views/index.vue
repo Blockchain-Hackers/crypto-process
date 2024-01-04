@@ -34,7 +34,7 @@
         </template>
         <template v-if="fetchingWorkflows">
           <div
-            class="tw-border-4 tw-border-dashed tw-rounded-xl tw-h-60
+            class="tw-col-span-2 tw-border-4 tw-border-dashed tw-rounded-xl tw-h-60
             tw-flex tw-flex-col tw-items-center tw-justify-center">
             <v-icon class="!tw-text-2xl tw-text-gray-400 tw-animate-spin">mdi-loading</v-icon>
             <p class="tw-text-gray-600 tw-font-medium">Fetching workflows...</p>
@@ -43,7 +43,7 @@
         <template v-if="!fetchingWorkflows && (workflows || []).length === 0">
           <div
             v-if="(workflows || []).length === 0"
-            class="tw-border-4 tw-border-dashed tw-rounded-xl tw-h-60
+            class="tw-col-span-2 tw-border-4 tw-border-dashed tw-rounded-xl tw-h-60
             tw-flex tw-flex-col tw-items-center tw-justify-center">
             <v-icon class="!tw-text-7xl tw-text-gray-400">mdi-bat</v-icon>
             <p class="tw-text-gray-600 tw-font-medium">No workflows created yet</p>
